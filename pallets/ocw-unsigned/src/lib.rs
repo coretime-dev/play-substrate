@@ -220,8 +220,9 @@ impl<T: Trait> frame_support::unsigned::ValidateUnsigned for Module<T> {
 		call: &Self::Call
 	) -> TransactionValidity {
 		match call {
-			Call::submit_price_unsigned(_input) =>
+			Call::submit_price_unsigned(input) =>
 				ValidTransaction::with_tag_prefix("OffchainWorkerUnsignedTx")
+					.and_provides(input)
 					.build(),
 			_ => InvalidTransaction::Call.into()
 		}
