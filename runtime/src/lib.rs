@@ -24,6 +24,7 @@ use grandpa::fg_primitives;
 use sp_version::RuntimeVersion;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
+use system::offchain::TransactionSubmitter;
 
 // A few exports that help ease life for downstream crates.
 #[cfg(any(feature = "std", test))]
@@ -225,6 +226,24 @@ impl sudo::Trait for Runtime {
 impl template::Trait for Runtime {
 	type Event = Event;
 }
+/// Used for coin flip module
+impl coinflip::Trait for Runtime {
+	type Randomness = randomness_collective_flip::Module<Runtime>;
+	type Event = Event;
+}
+
+impl poe::Trait for Runtime {
+	type Event = Event;
+}
+
+type SubmitUnsignedTransaction = TransactionSubmitter<(), (), UncheckedExtrinsic>;
+
+impl ocw_unsigned::Trait for Runtime {
+	type Event = Event;
+	type SubmitUnsignedTransaction = SubmitUnsignedTransaction;
+	type Call = Call;
+}
+
 
 construct_runtime!(
 	pub enum Runtime where
@@ -242,6 +261,9 @@ construct_runtime!(
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Used for the module template in `./template.rs`
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
+		CoinFlipModule: coinflip::{Module, Call, Storage, Event<T>},
+		PoeModule: poe::{Module, Call, Storage, Event<T>},
+		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 	}
 );
 

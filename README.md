@@ -1,4 +1,11 @@
-# Substrate Node Template
+# Play Substrate
+
+## Runtime modules
+
+* Template
+* Proof of Existence
+* Coin flip game 
+* Offchain worker (unsigned transaction)
 
 A new Substrate node, ready for hacking. This node includes:
 

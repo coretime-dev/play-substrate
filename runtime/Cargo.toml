@@ -101,6 +101,24 @@ package = 'pallet-template'
 path = '../pallets/template'
 version = '2.0.0-alpha.6'
 
+[dependencies.coinflip]
+default-features = false
+package = 'pallet-coinflip'
+path = '../pallets/coinflip'
+version = '2.0.0-alpha.6'
+
+[dependencies.poe]
+default-features = false
+package = 'pallet-poe'
+path = '../pallets/poe'
+version = '2.0.0-alpha.6'
+
+[dependencies.ocw-unsigned]
+default-features = false
+package = 'pallet-ocw-unsigned'
+path = '../pallets/ocw-unsigned'
+version = '2.0.0-alpha.6'
+
 [dependencies.timestamp]
 default-features = false
 package = 'pallet-timestamp'
