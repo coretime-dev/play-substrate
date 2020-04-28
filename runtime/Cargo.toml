@@ -119,6 +119,12 @@ package = 'pallet-ocw-unsigned'
 path = '../pallets/ocw-unsigned'
 version = '2.0.0-alpha.6'
 
+[dependencies.ocw-signed]
+default-features = false
+package = 'pallet-ocw-signed'
+path = '../pallets/ocw-signed'
+version = '2.0.0-alpha.6'
+
 [dependencies.timestamp]
 default-features = false
 package = 'pallet-timestamp'

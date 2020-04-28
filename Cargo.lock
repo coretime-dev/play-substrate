@@ -2572,6 +2572,7 @@ dependencies = [
  "pallet-balances",
  "pallet-coinflip",
  "pallet-grandpa",
+ "pallet-ocw-signed",
  "pallet-ocw-unsigned",
  "pallet-poe",
  "pallet-randomness-collective-flip",
@@ -2824,6 +2825,20 @@ dependencies = [
  "sp-finality-grandpa",
  "sp-runtime",
  "sp-staking",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-ocw-signed"
+version = "2.0.0-alpha.6"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "lite-json",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
  "sp-std",
 ]
 
