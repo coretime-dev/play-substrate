@@ -253,6 +253,10 @@ impl ocw_signed::Trait for Runtime {
 	type Call = Call;
 }
 
+impl weight::Trait for Runtime {
+	type Event = Event;
+}
+
 /// The payload being signed in transactions.
 pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 
@@ -314,6 +318,7 @@ construct_runtime!(
 		PoeModule: poe::{Module, Call, Storage, Event<T>},
 		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 		OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
+		WeightModule: weight::{Module, Call, Storage, Event<T>},
 	}
 );
 

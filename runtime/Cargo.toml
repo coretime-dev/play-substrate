@@ -125,6 +125,12 @@ package = 'pallet-ocw-signed'
 path = '../pallets/ocw-signed'
 version = '2.0.0-alpha.6'
 
+[dependencies.weight]
+default-features = false
+package = 'pallet-weight'
+path = '../pallets/weight'
+version = '2.0.0-alpha.6'
+
 [dependencies.timestamp]
 default-features = false
 package = 'pallet-timestamp'

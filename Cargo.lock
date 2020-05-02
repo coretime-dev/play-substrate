@@ -2580,6 +2580,7 @@ dependencies = [
  "pallet-template",
  "pallet-timestamp",
  "pallet-transaction-payment",
+ "pallet-weight",
  "parity-scale-codec",
  "serde",
  "sp-api",
@@ -2973,6 +2974,18 @@ dependencies = [
  "sp-api",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-weight"
+version = "2.0.0-alpha.6"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
 ]
 
 [[package]]
