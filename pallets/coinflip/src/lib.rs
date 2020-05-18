@@ -80,7 +80,7 @@ decl_module! {
 		fn deposit_event() = default;
 
 		/// Start the game by initialize the storage items.
-		#[weight = frame_support::weights::SimpleDispatchInfo::default()]
+		#[weight = 0]
 		fn set_payment(origin, value: T::Balance) -> DispatchResult {
 			// Ensure the function call is a signed message (i.e. a transaction)
 			ensure_signed(origin)?;
@@ -101,7 +101,7 @@ decl_module! {
 		}
 		
 		/// This function allow a user to play our coin flip game
-		#[weight = frame_support::weights::SimpleDispatchInfo::default()]
+		#[weight = 0]
 		fn play(origin) -> DispatchResult {
 			// Ensure that the function call is a signed message (i.e. a transaction)
 			let sender = ensure_signed(origin)?;

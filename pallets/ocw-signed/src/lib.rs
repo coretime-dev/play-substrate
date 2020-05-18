@@ -9,12 +9,16 @@ use frame_support::{
 	decl_event,
 	decl_error,
 	dispatch::{DispatchResult},
-	weights::SimpleDispatchInfo,
 };
 use frame_system::{
 	self as system,
 	ensure_signed,
-	offchain,
+	offchain::{
+		Signer,
+		CreateSignedTransaction,
+		SendSignedTransaction,
+		AppCrypto,
+	},
 };
 use sp_core::crypto::KeyTypeId;
 use sp_std::vec::Vec;
@@ -56,10 +60,9 @@ pub mod crypto {
 }
 
 /// The pallet's configuration trait.
-pub trait Trait: system::Trait {
-	/// The type to submit signed transactions.
-	type SubmitSignedTransaction:
-		offchain::SubmitSignedTransaction<Self, <Self as Trait>::Call>;
+pub trait Trait: system::Trait + CreateSignedTransaction<Call<Self>> {
+	/// The identifier type for an offchain worker.
+	type AuthorityId: AppCrypto<Self::Public, Self::Signature>;
 
 	/// The overarching event type.
 	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
@@ -105,7 +108,7 @@ decl_module! {
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
 
-		#[weight = SimpleDispatchInfo::FixedNormal(10_000)]
+		#[weight = 0]
 		pub fn submit_price_signed(origin, price: u32) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 			Self::add_price(who, price);
@@ -140,14 +143,10 @@ impl<T: Trait> Module<T> {
 	}
 
 	fn fetch_price_and_send_signed() -> Result<(), &'static str> {
-		use system::offchain::SubmitSignedTransaction;
-		// Firstly we check if there are any accounts in the local keystore that are capable of
-		// signing the transaction.
-		// If not it doesn't even make sense to make external HTTP requests, since we won't be able
-		// to put the results back on-chain.
-		if !T::SubmitSignedTransaction::can_sign() {
+		let signer = Signer::<T, T::AuthorityId>::all_accounts();
+		if !signer.can_sign() {
 			return Err(
-				"Submit signed: No local accounts available, Consider adding one via `author_insertKey` RPC."
+				"No local accounts available. Consider adding one via `author_insertKey` RPC."
 			)?
 		}
 
@@ -155,20 +154,23 @@ impl<T: Trait> Module<T> {
 		// Note this call will block until response is received.
 		let price = Self::fetch_price().map_err(|_| "Submit signed: Failed to fetch price")?;
 
-		// Received price is wrapped into a call to `submit_price` public function of this pallet.
-		// This means that the transaction, when executed, will simply call that function passing
-		// `price` as an argument.
-		let call = Call::submit_price_signed(price);
-
-		// Using `SubmitSignedTransaction` associated type we create and submit a transaction
+		// Using `send_signed_transaction` associated type we create and submit a transaction
 		// representing the call, we've just created.
 		// Submit signed will return a vector of results for all accounts that were found in the
 		// local keystore with expected `KEY_TYPE`.
-		let results = T::SubmitSignedTransaction::submit_signed(call);
+		let results = signer.send_signed_transaction(
+			|_account| {
+				// Received price is wrapped into a call to `submit_price` public function of this pallet.
+				// This means that the transaction, when executed, will simply call that function passing
+				// `price` as an argument.
+				Call::submit_price_signed(price)
+			}
+		);
+
 		for (acc, res) in &results {
 			match res {
-				Ok(()) => debug::info!("Submit signed: [{:?}] Submitted price of {} cents", acc, price),
-				Err(e) => debug::error!("Submit signed: [{:?}] Failed to submit transcation, {:?}", acc, e),
+				Ok(()) => debug::info!("Submit signed: [{:?}] Submitted price of {} cents", acc.id, price),
+				Err(e) => debug::error!("Submit signed: [{:?}] Failed to submit transcation, {:?}", acc.id, e),
 			}
 		}
 

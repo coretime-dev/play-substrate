@@ -13,7 +13,10 @@ use frame_support::{
 use frame_system::{
 	self as system,
 	ensure_none,
-	offchain,
+	offchain::{
+		SubmitTransaction,
+		SendTransactionTypes,
+	},
 };
 use sp_std::vec::Vec;
 use sp_runtime::{
@@ -43,11 +46,7 @@ mod tests;
 const MAX_LEN: usize = 64; // TODO configurage
 
 /// The pallet's configuration trait.
-pub trait Trait: system::Trait {
-	/// The type to submit unsigned transactions.
-	type SubmitUnsignedTransaction:
-		offchain::SubmitUnsignedTransaction<Self, <Self as Trait>::Call>;
-
+pub trait Trait: system::Trait + SendTransactionTypes<Call<Self>> {
 	/// The overarching event type.
 	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
 
@@ -92,7 +91,7 @@ decl_module! {
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
 
-		#[weight = frame_support::weights::SimpleDispatchInfo::default()]
+		#[weight = 0]
 		pub fn submit_price_unsigned(origin, price: u32) -> DispatchResult {
 			// This ensures that the function can only be called via unsigned transaction.
 			ensure_none(origin)?;
@@ -130,14 +129,15 @@ impl<T: Trait> Module<T> {
 	}
 
 	fn fetch_price_and_send_unsigned() -> Result<(), &'static str> {
-		use system::offchain::SubmitUnsignedTransaction;
 
 		let price = Self::fetch_price().map_err(|_| "Failed to fetch price")?;
 
 		let call = Call::submit_price_unsigned(price);
 
-		T::SubmitUnsignedTransaction::submit_unsigned(call)
-			.map_err(|()| "Unable to submit unsigned transaction".into())
+		SubmitTransaction::<T, Call<T>>::submit_unsigned_transaction(call.into())
+			.map_err(|()| "Unable to submit unsigned transaction")?;
+
+		Ok(())
 	}
 
 	fn fetch_price() -> Result<u32, http::Error> {

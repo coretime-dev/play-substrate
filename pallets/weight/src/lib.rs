@@ -12,13 +12,13 @@
 use frame_support::{
 	decl_module, decl_storage, decl_event, decl_error, dispatch,
 	weights::{
-		SimpleDispatchInfo,
 		DispatchClass,
 		ClassifyDispatch,
 		WeighData,
 		Weight,
 		PaysFee,
 		FunctionOf,
+		Pays,
 	}
 };
 use frame_system::{self as system, ensure_signed};
@@ -50,8 +50,8 @@ impl ClassifyDispatch<(&u32,)> for WeightForCustomWeight {
 }
 
 impl PaysFee<(&u32,)> for WeightForCustomWeight {
-	fn pays_fee(&self, _target: (&u32,)) -> bool {
-		true
+	fn pays_fee(&self, _target: (&u32,)) -> Pays {
+		Pays::Yes
 	}
 }
 
@@ -116,7 +116,7 @@ decl_module! {
 		/// - `O(1)`
 		/// - 1 DB change
 		/// # </weight>
-		#[weight = SimpleDispatchInfo::default()]
+		#[weight = 100_000_000]
 		pub fn fixed_weight_with_default(origin, something: u32) -> dispatch::DispatchResult {
 			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;
@@ -131,7 +131,7 @@ decl_module! {
 		}
 
 		/// Just a dummy dispatchable call for operational purpose.
-		#[weight = SimpleDispatchInfo::FixedOperational(20_000)]
+		#[weight = (100_000_000, DispatchClass::Operational)]
 		pub fn fixed_weight_with_operational(origin, something: u32) -> dispatch::DispatchResult {
 			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;
@@ -161,7 +161,7 @@ decl_module! {
 		}
 
 		/// Just a dummy dispatchable call for FunctionOf weight.
-		#[weight = FunctionOf(|args: (&u32,)| args.0 * 10, DispatchClass::Normal, true)]
+		#[weight = FunctionOf(|args: (&u32,)| (args.0 * 10) as Weight, DispatchClass::Normal, Pays::Yes)]
 		pub fn function_of_weight(origin, something: u32) -> dispatch::DispatchResult {
 			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;

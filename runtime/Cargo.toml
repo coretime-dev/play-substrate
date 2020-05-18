@@ -145,31 +145,31 @@ version = '2.0.0-alpha.8'
 default-features = false
 package = 'pallet-coinflip'
 path = '../pallets/coinflip'
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.8'
 
 [dependencies.poe]
 default-features = false
 package = 'pallet-poe'
 path = '../pallets/poe'
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.8'
 
-[dependencies.ocw-unsigned]
-default-features = false
-package = 'pallet-ocw-unsigned'
-path = '../pallets/ocw-unsigned'
-version = '2.0.0-alpha.6'
+# [dependencies.ocw-unsigned]
+# default-features = false
+# package = 'pallet-ocw-unsigned'
+# path = '../pallets/ocw-unsigned'
+# version = '2.0.0-alpha.8'
 
-[dependencies.ocw-signed]
-default-features = false
-package = 'pallet-ocw-signed'
-path = '../pallets/ocw-signed'
-version = '2.0.0-alpha.6'
+# [dependencies.ocw-signed]
+# default-features = false
+# package = 'pallet-ocw-signed'
+# path = '../pallets/ocw-signed'
+# version = '2.0.0-alpha.8'
 
 [dependencies.weight]
 default-features = false
 package = 'pallet-weight'
 path = '../pallets/weight'
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.8'
 
 [dependencies.timestamp]
 default-features = false
@@ -231,4 +231,9 @@ std = [
     'timestamp/std',
     'transaction-payment/std',
     'template/std',
+    'coinflip/std',
+    'poe/std',
+    # 'ocw-unsigned/std',
+    # 'ocw-signed/std',
+    'weight/std',
 ]

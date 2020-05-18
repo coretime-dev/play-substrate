@@ -65,7 +65,7 @@ decl_module! {
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
 
-		#[weight = frame_support::weights::SimpleDispatchInfo::default()]
+		#[weight = 0]
 		pub fn create_claim(origin, claim: Vec<u8>) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
 
@@ -78,7 +78,7 @@ decl_module! {
 			Ok(())
 		}
 
-		#[weight = frame_support::weights::SimpleDispatchInfo::default()]
+		#[weight = 0]
 		pub fn revoke_claim(origin, claim: Vec<u8>) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
 
