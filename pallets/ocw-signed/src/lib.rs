@@ -53,10 +53,13 @@ pub const KEY_TYPE: KeyTypeId = KeyTypeId(*b"btc!");
 /// Based on the above `KeyTypeId` we need to generate a pallet-specific crypto type wrappers.
 /// We can use from supported crypto kinds (`sr25519`, `ed25519` and `ecdsa`) and augment
 /// the types with this pallet-specific identifier.
-pub mod crypto {
+pub mod sr25519 {
 	use super::KEY_TYPE;
-	use sp_runtime::app_crypto::{app_crypto, sr25519};
+	use sp_application_crypto::{app_crypto, sr25519};
+
 	app_crypto!(sr25519, KEY_TYPE);
+
+	pub type AuthorityId = Public;
 }
 
 /// The pallet's configuration trait.

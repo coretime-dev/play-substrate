@@ -2243,6 +2243,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "lite-json"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "faa835713bb12ba5204013497da16caf2dd2eee25ca829d0efaa054fb38c4ddd"
+dependencies = [
+ "paste",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2547,6 +2556,8 @@ dependencies = [
  "pallet-balances",
  "pallet-coinflip",
  "pallet-grandpa",
+ "pallet-ocw-signed",
+ "pallet-ocw-unsigned",
  "pallet-poe",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
@@ -2803,6 +2814,35 @@ dependencies = [
  "sp-runtime",
  "sp-session",
  "sp-staking",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-ocw-signed"
+version = "2.0.0-alpha.8"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "lite-json",
+ "parity-scale-codec",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-ocw-unsigned"
+version = "2.0.0-alpha.8"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "lite-json",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
  "sp-std",
 ]
 

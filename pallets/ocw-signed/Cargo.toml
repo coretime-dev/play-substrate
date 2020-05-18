@@ -57,6 +57,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-alpha.8'
 version = '2.0.0-alpha.8'
 
+[dependencies.sp-application-crypto]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-alpha.8'
+version = '2.0.0-alpha.8'
+
 [features]
 default = ['std']
 std = [
