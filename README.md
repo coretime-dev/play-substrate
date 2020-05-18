@@ -6,6 +6,8 @@
 * Proof of Existence
 * Coin flip game 
 * Offchain worker (unsigned transaction)
+* Offchain worker (signed transaction)
+* Weight demo
 
 A new FRAME-based Substrate node, ready for hacking.
 
