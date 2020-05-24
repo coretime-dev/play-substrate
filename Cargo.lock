@@ -2555,6 +2555,7 @@ dependencies = [
  "pallet-aura",
  "pallet-balances",
  "pallet-coinflip",
+ "pallet-datatype",
  "pallet-grandpa",
  "pallet-ocw-signed",
  "pallet-ocw-unsigned",
@@ -2779,6 +2780,20 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-datatype"
+version = "2.0.0-alpha.8"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]

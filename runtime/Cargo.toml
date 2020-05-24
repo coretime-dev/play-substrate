@@ -171,6 +171,12 @@ package = 'pallet-weight'
 path = '../pallets/weight'
 version = '2.0.0-alpha.8'
 
+[dependencies.datatype]
+default-features = false
+package = 'pallet-datatype'
+path = '../pallets/datatype'
+version = '2.0.0-alpha.8'
+
 [dependencies.timestamp]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
@@ -236,4 +242,5 @@ std = [
     'ocw-unsigned/std',
     'ocw-signed/std',
     'weight/std',
+    'datatype/std',
 ]

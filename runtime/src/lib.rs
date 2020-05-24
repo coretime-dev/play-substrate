@@ -341,6 +341,10 @@ impl weight::Trait for Runtime {
 	type Event = Event;
 }
 
+impl datatype::Trait for Runtime {
+	type Event = Event;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -362,6 +366,7 @@ construct_runtime!(
 		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 		OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
+		DataTypeModule: datatype::{Module, Call, Storage, Event},
 	}
 );
 
