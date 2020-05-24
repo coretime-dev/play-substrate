@@ -8,6 +8,8 @@
 * Offchain worker (unsigned transaction)
 * Offchain worker (signed transaction)
 * Weight demo
+* Data type
+* Genesis config demo
 
 A new FRAME-based Substrate node, ready for hacking.
 
