@@ -177,6 +177,12 @@ package = 'pallet-datatype'
 path = '../pallets/datatype'
 version = '2.0.0-alpha.8'
 
+[dependencies.genesis_config]
+default-features = false
+package = 'pallet-genesis-config'
+path = '../pallets/genesis-config'
+version = '2.0.0-alpha.8'
+
 [dependencies.timestamp]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'

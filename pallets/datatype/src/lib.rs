@@ -1,6 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-/// A FRAME pallet template with necessary imports
+/// A FRAME pallet for data type
 
 /// Feel free to remove or edit this file as needed.
 /// If you change the name of this file, make sure to update its references in runtime/src/lib.rs
@@ -72,7 +72,7 @@ decl_storage! {
 	// It is important to update your storage name so that your pallet's
 	// storage items are isolated from other pallets.
 	// ---------------------------------vvvvvvvvvvvvvv
-	trait Store for Module<T: Trait> as TemplateModule {
+	trait Store for Module<T: Trait> as DataTypeModule {
 		// init to be none, store optional value
 		MyOption get(fn my_option): Option<u32>;
 

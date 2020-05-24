@@ -345,6 +345,10 @@ impl datatype::Trait for Runtime {
 	type Event = Event;
 }
 
+impl genesis_config::Trait for Runtime {
+	type Event = Event;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -367,6 +371,7 @@ construct_runtime!(
 		OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
 		DataTypeModule: datatype::{Module, Call, Storage, Event},
+		GenesisConfigModule: genesis_config::{Module, Call, Storage, Event<T>, Config},
 	}
 );
 
