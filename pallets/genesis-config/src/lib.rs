@@ -31,18 +31,26 @@ decl_storage! {
 	// It is important to update your storage name so that your pallet's
 	// storage items are isolated from other pallets.
 	// ---------------------------------vvvvvvvvvvvvvv
-	// build(|config: &GenesisConfig<T>| config.my_bulid_genesis)
-	
-	// add_extra_genesis {
-	// 	config(members): Vec<T::AccountId>;
-	// }
 	trait Store for Module<T: Trait> as GenesisConfigModule {
 		// genesis storage with config()
 		Something get(fn something) config(): Option<u32>;
 
-		Something2 get(fn something2): Option<u32>;
+		SomethingTwo get(fn something_two) build(|config: &GenesisConfig<T>| {
+			Some(config.something_two + 1)
+		}): Option<u32>;
 
+		SomethingMap get(fn something_map): map hasher(blake2_128_concat) T::AccountId => u32;
 	}
+
+	add_extra_genesis {
+		config(something_two): u32;
+		config(some_account_value): Vec<(T::AccountId, u32)>;
+		build(|config: &GenesisConfig<T>| {
+			for (who, value) in config.some_account_value.iter() {
+				SomethingMap::<T>::insert(who, value);
+			}
+		})
+	}	
 }
 
 // The pallet's events

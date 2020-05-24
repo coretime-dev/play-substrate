@@ -122,6 +122,8 @@ fn testnet_genesis(initial_authorities: Vec<(AuraId, GrandpaId)>,
 		}),
 		genesis_config: Some(GenesisConfigModuleConfig {
 			something: 30,
+			something_two: 60,
+			some_account_value: endowed_accounts.iter().cloned().map(|k| (k, 1 << 6)).collect(),
 		})
 	}
 }
