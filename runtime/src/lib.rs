@@ -27,7 +27,7 @@ use grandpa::fg_primitives;
 use sp_version::RuntimeVersion;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
-use ocw_signed::sr25519::AuthorityId as OcwPublic;
+// use ocw_signed::sr25519::AuthorityId as OcwPublic;
 use codec::Encode;
 
 // A few exports that help ease life for downstream crates.
@@ -271,78 +271,78 @@ impl poe::Trait for Runtime {
 	type Event = Event;
 }
 
-impl<C> system::offchain::SendTransactionTypes<C> for Runtime where
-	Call: From<C>,
-{
-	type OverarchingCall = Call;
-	type Extrinsic = UncheckedExtrinsic;
-}
+// impl<C> system::offchain::SendTransactionTypes<C> for Runtime where
+// 	Call: From<C>,
+// {
+// 	type OverarchingCall = Call;
+// 	type Extrinsic = UncheckedExtrinsic;
+// }
 
-impl ocw_unsigned::Trait for Runtime {
-	type Event = Event;
-	type Call = Call;
-}
+// impl ocw_unsigned::Trait for Runtime {
+// 	type Event = Event;
+// 	type Call = Call;
+// }
 
-impl system::offchain::SigningTypes for Runtime {
-	type Public = <Signature as traits::Verify>::Signer;
-	type Signature = Signature;
-}
+// impl system::offchain::SigningTypes for Runtime {
+// 	type Public = <Signature as traits::Verify>::Signer;
+// 	type Signature = Signature;
+// }
 
-pub struct OcwAuthorityId;
-impl system::offchain::AppCrypto<<Signature as Verify>::Signer, Signature> for OcwAuthorityId {
-	type RuntimeAppPublic = OcwPublic;
-	type GenericSignature = sp_core::sr25519::Signature;
-	type GenericPublic = sp_core::sr25519::Public;
-}
+// pub struct OcwAuthorityId;
+// impl system::offchain::AppCrypto<<Signature as Verify>::Signer, Signature> for OcwAuthorityId {
+// 	type RuntimeAppPublic = OcwPublic;
+// 	type GenericSignature = sp_core::sr25519::Signature;
+// 	type GenericPublic = sp_core::sr25519::Public;
+// }
 
-/// The payload being signed in transactions.
-pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
+// /// The payload being signed in transactions.
+// pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 
-impl<LocalCall> system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
-	Call: From<LocalCall>,
-{
-	fn create_transaction<C: system::offchain::AppCrypto<Self::Public, Self::Signature>>(
-		call: Call,
-		public: <Signature as traits::Verify>::Signer,
-		account: AccountId,
-		nonce: Index,
-	) -> Option<(Call, <UncheckedExtrinsic as traits::Extrinsic>::SignaturePayload)> {
-		// take the biggest period possible.
-		let period = BlockHashCount::get()
-			.checked_next_power_of_two()
-			.map(|c| c / 2)
-			.unwrap_or(2) as u64;
-		let current_block = (System::block_number() as u64)
-			// The `System::block_number` is initialized with `n+1`,
-			// so the actual block number is `n`.
-			.saturating_sub(1);
-		let tip = 0;
-		let extra: SignedExtra = (
-			system::CheckSpecVersion::<Runtime>::new(),
-			system::CheckTxVersion::<Runtime>::new(),
-			system::CheckGenesis::<Runtime>::new(),
-			system::CheckEra::<Runtime>::from(generic::Era::mortal(period, current_block)),
-			system::CheckNonce::<Runtime>::from(nonce),
-			system::CheckWeight::<Runtime>::new(),
-			transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
-		);
-		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
-			debug::warn!("Unable to create signed payload: {:?}", e);
-		}).ok()?;
-		let signature = raw_payload.using_encoded(|payload| {
-			C::sign(payload, public)
-		})?;
-		let address = IdentityLookup::<AccountId>::unlookup(account);
-		let (call, extra, _) = raw_payload.deconstruct();
-		Some((call, (address, signature.into(), extra)))
-	}
-}
+// impl<LocalCall> system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
+// 	Call: From<LocalCall>,
+// {
+// 	fn create_transaction<C: system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+// 		call: Call,
+// 		public: <Signature as traits::Verify>::Signer,
+// 		account: AccountId,
+// 		nonce: Index,
+// 	) -> Option<(Call, <UncheckedExtrinsic as traits::Extrinsic>::SignaturePayload)> {
+// 		// take the biggest period possible.
+// 		let period = BlockHashCount::get()
+// 			.checked_next_power_of_two()
+// 			.map(|c| c / 2)
+// 			.unwrap_or(2) as u64;
+// 		let current_block = (System::block_number() as u64)
+// 			// The `System::block_number` is initialized with `n+1`,
+// 			// so the actual block number is `n`.
+// 			.saturating_sub(1);
+// 		let tip = 0;
+// 		let extra: SignedExtra = (
+// 			system::CheckSpecVersion::<Runtime>::new(),
+// 			system::CheckTxVersion::<Runtime>::new(),
+// 			system::CheckGenesis::<Runtime>::new(),
+// 			system::CheckEra::<Runtime>::from(generic::Era::mortal(period, current_block)),
+// 			system::CheckNonce::<Runtime>::from(nonce),
+// 			system::CheckWeight::<Runtime>::new(),
+// 			transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+// 		);
+// 		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
+// 			debug::warn!("Unable to create signed payload: {:?}", e);
+// 		}).ok()?;
+// 		let signature = raw_payload.using_encoded(|payload| {
+// 			C::sign(payload, public)
+// 		})?;
+// 		let address = IdentityLookup::<AccountId>::unlookup(account);
+// 		let (call, extra, _) = raw_payload.deconstruct();
+// 		Some((call, (address, signature.into(), extra)))
+// 	}
+// }
 
-impl ocw_signed::Trait for Runtime {
-	type AuthorityId = OcwAuthorityId;
-	type Event = Event;
-	type Call = Call;
-}
+// impl ocw_signed::Trait for Runtime {
+// 	type AuthorityId = OcwAuthorityId;
+// 	type Event = Event;
+// 	type Call = Call;
+// }
 
 impl weight::Trait for Runtime {
 	type Event = Event;
@@ -374,8 +374,8 @@ construct_runtime!(
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 		CoinFlipModule: coinflip::{Module, Call, Storage, Event<T>},
 		PoeModule: poe::{Module, Call, Storage, Event<T>},
-		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
-		OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
+		// OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
+		// OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
 		DataTypeModule: datatype::{Module, Call, Storage, Event},
 		GenesisConfigModule: genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
