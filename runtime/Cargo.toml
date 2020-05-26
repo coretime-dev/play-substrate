@@ -56,6 +56,20 @@ package = 'pallet-randomness-collective-flip'
 tag = 'v2.0.0-rc1'
 version = '2.0.0-rc1'
 
+[dependencies.frame-benchmarking]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc1'
+version = "2.0.0-rc1"
+optional = true
+
+[dependencies.frame-system-benchmarking]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc1'
+version = "2.0.0-rc1"
+optional = true
+
 [dependencies.serde]
 features = ['derive']
 optional = true
@@ -243,6 +257,14 @@ std = [
     # 'ocw-signed/std',
     'weight/std',
     'datatype/std',
+]
+runtime-benchmarks = [
+	"frame-benchmarking",
+	"frame-support/runtime-benchmarks",
+	"system/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"balances/runtime-benchmarks",
+	"frame-system-benchmarking",
 ]
 
 [build-dependencies.wasm-builder-runner]
