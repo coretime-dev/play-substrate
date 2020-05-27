@@ -356,6 +356,10 @@ impl genesis_config::Trait for Runtime {
 	type Event = Event;
 }
 
+impl benchmark_demo::Trait for Runtime {
+	type Event = Event;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -379,6 +383,7 @@ construct_runtime!(
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
 		DataTypeModule: datatype::{Module, Call, Storage, Event},
 		GenesisConfigModule: genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
+		BenchmarkDemoModule: benchmark_demo::{Module, Call, Storage, Event<T>},
 	}
 );
 
@@ -540,6 +545,7 @@ impl_runtime_apis! {
 			let params = (&pallet, &benchmark, &lowest_range_values, &highest_range_values, &steps, repeat);
 
 			add_benchmark!(params, batches, b"balances", Balances);
+			add_benchmark!(params, batches, b"benchmark-demo", BenchmarkDemoModule);
 			add_benchmark!(params, batches, b"system", SystemBench::<Runtime>);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }

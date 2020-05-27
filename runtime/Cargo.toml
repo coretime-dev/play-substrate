@@ -59,15 +59,15 @@ version = '2.0.0-rc2'
 [dependencies.frame-benchmarking]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc1'
-version = "2.0.0-rc1"
+tag = 'v2.0.0-rc2'
+version = "2.0.0-rc2"
 optional = true
 
 [dependencies.frame-system-benchmarking]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc1'
-version = "2.0.0-rc1"
+tag = 'v2.0.0-rc2'
+version = "2.0.0-rc2"
 optional = true
 
 [dependencies.serde]
@@ -209,6 +209,12 @@ package = 'pallet-genesis-config'
 path = '../pallets/genesis-config'
 version = '2.0.0-rc2'
 
+[dependencies.benchmark-demo]
+default-features = false
+package = 'pallet-benchmark-demo'
+path = '../pallets/benchmark-demo'
+version = '2.0.0-rc2'
+
 [dependencies.timestamp]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
@@ -259,6 +265,7 @@ std = [
     'weight/std',
     'datatype/std',
     'genesis_config/std',
+    'benchmark-demo/std',
 ]
 runtime-benchmarks = [
 	"frame-benchmarking",
@@ -266,6 +273,7 @@ runtime-benchmarks = [
 	"system/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"balances/runtime-benchmarks",
+	"benchmark-demo/runtime-benchmarks",
 	"frame-system-benchmarking",
 ]
 
