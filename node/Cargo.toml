@@ -16,7 +16,7 @@ targets = ['x86_64-unknown-linux-gnu']
 futures = '0.3.4'
 log = '0.4.8'
 parking_lot = '0.10.0'
-structopt = '0.3.8'
+structopt = { version = '0.3.8', optional = true }
 
 [dependencies.node-template-runtime]
 path = '../runtime'
@@ -31,6 +31,8 @@ version = '0.8.0-rc1'
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc1'
 version = '0.8.0-rc1'
+optional = true
+features = [ "wasmtime" ]
 
 [dependencies.frame-benchmarking-cli]
 git = 'https://github.com/paritytech/substrate.git'
@@ -77,6 +79,7 @@ version = '0.8.0-rc1'
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc1'
 version = '0.8.0-rc1'
+features = [ "wasmtime" ]
 
 [dependencies.sc-transaction-pool]
 git = 'https://github.com/paritytech/substrate.git'
@@ -122,6 +125,7 @@ version = '2.0.0-rc1'
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc1'
 version = '2.0.0-rc1'
+optional = true
 
 [build-dependencies.frame-benchmarking-cli]
 git = 'https://github.com/paritytech/substrate.git'
@@ -135,21 +139,23 @@ name = 'node-template'
 [features]
 default = [ "cli" ]
 cli = [
-    "frame-benchmarking-cli",
+    "wasmi-errno",
+	"sc-cli",
+	"frame-benchmarking-cli",
+	"sc-service/db",
+	"structopt",
+	"substrate-build-script-utils",
 ]
+
 runtime-benchmarks = [
 	"node-template-runtime/runtime-benchmarks",
 	"frame-benchmarking-cli",
 ]
 
-# wasmtime = [
-# 	"sc-executor/wasmtime",
-# ]
-# wasmi-errno = [
-# 	"sc-executor/wasmi-errno",
-# ]
-# stress-test = []
+wasmtime = [
+	"sc-executor/wasmtime",
+]
 
-# [[bench]]
-# name = "bench"
-# harness = false
+wasmi-errno = [
+	"sc-executor/wasmi-errno",
+]

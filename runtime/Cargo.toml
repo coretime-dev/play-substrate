@@ -231,6 +231,7 @@ std = [
     'codec/std',
     'frame-executive/std',
     'frame-support/std',
+    "frame-benchmarking/std",
     'grandpa/std',
     'randomness-collective-flip/std',
     'serde',
@@ -257,6 +258,7 @@ std = [
     # 'ocw-signed/std',
     'weight/std',
     'datatype/std',
+    'genesis_config/std',
 ]
 runtime-benchmarks = [
 	"frame-benchmarking",
