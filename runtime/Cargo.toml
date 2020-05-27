@@ -157,43 +157,43 @@ version = '2.0.0-rc2'
 default-features = false
 package = 'pallet-coinflip'
 path = '../pallets/coinflip'
-version = '2.0.0-rc1'
+version = '2.0.0-rc2'
 
 [dependencies.poe]
 default-features = false
 package = 'pallet-poe'
 path = '../pallets/poe'
-version = '2.0.0-rc1'
+version = '2.0.0-rc2'
 
 # [dependencies.ocw-unsigned]
 # default-features = false
 # package = 'pallet-ocw-unsigned'
 # path = '../pallets/ocw-unsigned'
-# version = '2.0.0-rc1'
+# version = '2.0.0-rc2'
 
 # [dependencies.ocw-signed]
 # default-features = false
 # package = 'pallet-ocw-signed'
 # path = '../pallets/ocw-signed'
-# version = '2.0.0-rc1'
+# version = '2.0.0-rc2'
 
 [dependencies.weight]
 default-features = false
 package = 'pallet-weight'
 path = '../pallets/weight'
-version = '2.0.0-rc1'
+version = '2.0.0-rc2'
 
 [dependencies.datatype]
 default-features = false
 package = 'pallet-datatype'
 path = '../pallets/datatype'
-version = '2.0.0-rc1'
+version = '2.0.0-rc2'
 
 [dependencies.genesis_config]
 default-features = false
 package = 'pallet-genesis-config'
 path = '../pallets/genesis-config'
-version = '2.0.0-rc1'
+version = '2.0.0-rc2'
 
 [dependencies.timestamp]
 default-features = false

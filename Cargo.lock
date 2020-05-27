@@ -2845,7 +2845,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-coinflip"
-version = "2.0.0-rc1"
+version = "2.0.0-rc2"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -2859,7 +2859,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-datatype"
-version = "2.0.0-rc1"
+version = "2.0.0-rc2"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -2889,7 +2889,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-genesis-config"
-version = "2.0.0-rc1"
+version = "2.0.0-rc2"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -2922,7 +2922,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-poe"
-version = "2.0.0-rc1"
+version = "2.0.0-rc2"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3036,7 +3036,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-weight"
-version = "2.0.0-rc1"
+version = "2.0.0-rc2"
 dependencies = [
  "frame-support",
  "frame-system",
