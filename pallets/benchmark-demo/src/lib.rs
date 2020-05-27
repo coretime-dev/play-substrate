@@ -68,7 +68,11 @@ decl_module! {
 		/// Just a dummy entry point.
 		/// function that can be called by the external world as an extrinsics call
 		/// takes a parameter of the type `AccountId`, stores it, and emits an event
-		#[weight = 10_000]
+		/// # <weight>
+		/// - Base Weight: 31.76 µs
+		/// - DB Weight: 1 Write
+		/// # </weight>
+		#[weight = T::DbWeight::get().writes(1) + 32_000_000]
 		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
 			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;
@@ -117,6 +121,10 @@ mod benchmarking {
 			let b in ...;
 			let caller = account("caller", 0, 0);
 		}: _ (RawOrigin::Signed(caller), b.into())
+		verify {
+			let value = Something::get();
+			assert_eq!(value, b.into());
+		}
 	}
 
 	#[cfg(test)]
