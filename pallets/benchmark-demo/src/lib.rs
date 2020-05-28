@@ -2,7 +2,12 @@
 
 /// A FRAME pallet for demo benchmark
 
-use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch};
+use frame_support::{
+	decl_module, decl_storage, decl_event, decl_error, dispatch,
+	traits::{
+		Get
+	},
+};
 use frame_system::{self as system, ensure_signed};
 
 #[cfg(test)]
@@ -86,22 +91,6 @@ decl_module! {
 			Ok(())
 		}
 
-		/// Another dummy entry point.
-		/// takes no parameters, attempts to increment storage value, and possibly throws an error
-		#[weight = 10_000]
-		pub fn cause_error(origin) -> dispatch::DispatchResult {
-			// Check it was signed and get the signer. See also: ensure_root and ensure_none
-			let _who = ensure_signed(origin)?;
-
-			match Something::get() {
-				None => Err(Error::<T>::NoneValue)?,
-				Some(old) => {
-					let new = old.checked_add(1).ok_or(Error::<T>::StorageOverflow)?;
-					Something::put(new);
-					Ok(())
-				},
-			}
-		}
 	}
 }
 
