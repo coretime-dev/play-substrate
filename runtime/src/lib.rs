@@ -356,6 +356,10 @@ impl genesis_config::Trait for Runtime {
 	type Event = Event;
 }
 
+impl benchmark_demo::Trait for Runtime {
+	type Event = Event;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -379,6 +383,7 @@ construct_runtime!(
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
 		DataTypeModule: datatype::{Module, Call, Storage, Event},
 		GenesisConfigModule: genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
+		BenchmarkDemoModule: benchmark_demo::{Module, Call, Storage, Event<T>},
 	}
 );
 
@@ -517,4 +522,35 @@ impl_runtime_apis! {
 			None
 		}
 	}
+
+	#[cfg(feature = "runtime-benchmarks")]
+	impl frame_benchmarking::Benchmark<Block> for Runtime {
+		fn dispatch_benchmark(
+			pallet: Vec<u8>,
+			benchmark: Vec<u8>,
+			lowest_range_values: Vec<u32>,
+			highest_range_values: Vec<u32>,
+			steps: Vec<u32>,
+			repeat: u32,
+		) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
+			use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark};
+			// Trying to add benchmarks directly to the Session Pallet caused cyclic dependency issues.
+			// To get around that, we separated the Session benchmarks into its own crate, which is why
+			// we need these two lines below.
+			use frame_system_benchmarking::Module as SystemBench;
+
+			impl frame_system_benchmarking::Trait for Runtime {}
+
+			let mut batches = Vec::<BenchmarkBatch>::new();
+			let params = (&pallet, &benchmark, &lowest_range_values, &highest_range_values, &steps, repeat);
+
+			add_benchmark!(params, batches, b"balances", Balances);
+			add_benchmark!(params, batches, b"benchmark-demo", BenchmarkDemoModule);
+			add_benchmark!(params, batches, b"system", SystemBench::<Runtime>);
+
+			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
+			Ok(batches)
+		}
+	}
+
 }
