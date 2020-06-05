@@ -185,11 +185,11 @@ package = 'pallet-ocw-unsigned'
 path = '../pallets/ocw-unsigned'
 version = '2.0.0-rc2'
 
-# [dependencies.ocw-signed]
-# default-features = false
-# package = 'pallet-ocw-signed'
-# path = '../pallets/ocw-signed'
-# version = '2.0.0-rc2'
+[dependencies.ocw-signed]
+default-features = false
+package = 'pallet-ocw-signed'
+path = '../pallets/ocw-signed'
+version = '2.0.0-rc2'
 
 [dependencies.weight]
 default-features = false
@@ -261,7 +261,7 @@ std = [
     'coinflip/std',
     'poe/std',
     'ocw-unsigned/std',
-    # 'ocw-signed/std',
+    'ocw-signed/std',
     'weight/std',
     'datatype/std',
     'genesis_config/std',

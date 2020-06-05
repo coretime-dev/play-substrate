@@ -75,7 +75,7 @@ pub trait Trait: system::Trait + SendTransactionTypes<Call<Self>> {
 
 // This pallet's storage items.
 decl_storage! {
-	trait Store for Module<T: Trait> as TemplateModule {
+	trait Store for Module<T: Trait> as OcwUnsignedModule {
 		/// A vector of recently submitted prices.
 		/// 
 		/// This is used to calculate average price, should have bounded size.

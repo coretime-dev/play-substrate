@@ -2919,6 +2919,7 @@ dependencies = [
  "pallet-datatype",
  "pallet-genesis-config",
  "pallet-grandpa",
+ "pallet-ocw-signed",
  "pallet-ocw-unsigned",
  "pallet-poe",
  "pallet-randomness-collective-flip",
@@ -3213,6 +3214,23 @@ dependencies = [
  "sp-runtime",
  "sp-session",
  "sp-staking",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-ocw-signed"
+version = "2.0.0-rc2"
+dependencies = [
+ "alt_serde",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "serde",
+ "serde_json 1.0.44",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
  "sp-std",
 ]
 
