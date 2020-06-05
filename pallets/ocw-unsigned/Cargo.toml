@@ -11,15 +11,16 @@ version = '2.0.0-rc2'
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
 
+[dependencies]
+alt_serde = { version = "1", default-features = false, features = ["derive"] }
+# updated to `alt_serde_json` when latest version supporting feature `alloc` is released
+serde_json = { version = "1", default-features = false, git = "https://github.com/Xanewok/json", branch = "no-std", features = ["alloc"] }
+
 [dependencies.codec]
 default-features = false
 features = ['derive']
 package = 'parity-scale-codec'
 version = '1.3.0'
-
-[dependencies.lite-json]
-default-features = false
-version = "0.1"
 
 [dependencies.serde]
 version = "1.0.101"
@@ -68,7 +69,6 @@ std = [
     'codec/std',
     'frame-support/std',
     'frame-system/std',
-    'lite-json/std',
     'sp-io/std',
     'sp-runtime/std',
     'sp-std/std',

@@ -31,8 +31,11 @@ use sp_runtime::{
 			TransactionSource,
 		},
 };
-use lite_json::json::JsonValue;
+use codec::{Encode, Decode};
 use sp_std::prelude::*;
+// We use `alt_serde`, and Xanewok-modified `serde_json` so that we can compile the program
+//   with serde(features `std`) and alt_serde(features `no_std`).
+use alt_serde::{Deserialize, Deserializer};
 
 #[cfg(test)]
 mod mock;
@@ -44,6 +47,21 @@ mod tests;
 // type TokenPrice = u32;
 
 const MAX_LEN: usize = 64; // TODO configurage
+
+// Specifying serde path as `alt_serde`
+// ref: https://serde.rs/container-attrs.html#crate
+#[serde(crate = "alt_serde")]
+#[derive(Deserialize, Encode, Decode, Default)]
+struct PriceInfo {
+	#[serde(rename(deserialize = "USD"), deserialize_with = "de_float_to_integer")]
+    usd: u32,
+}
+
+pub fn de_float_to_integer<'de, D>(de: D) -> Result<u32, D::Error>
+where D: Deserializer<'de> {
+	let f: f32 = Deserialize::deserialize(de)?;
+	Ok(f as u32)
+}
 
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait + SendTransactionTypes<Call<Self>> {
@@ -75,6 +93,7 @@ decl_event!(
 // The pallet's errors
 decl_error! {
 	pub enum Error for Module<T: Trait> {
+		ParseError,
 	}
 }
 
@@ -178,36 +197,11 @@ impl<T: Trait> Module<T> {
 			http::Error::Unknown
 		})?;
 
-		let price = match Self::parse_price(body_str) {
-			Some(price) => Ok(price),
-			None => {
-				debug::warn!("Unable to extract price from the response: {:?}", body_str);
-				Err(http::Error::Unknown)
-			}
-		}?;
+		let price_info: PriceInfo = serde_json::from_str(&body_str).unwrap();
 
-		debug::warn!("Got price: {} cents", price);
+		debug::warn!("Got price: {} cents", price_info.usd);
 
-		Ok(price)
-	}
-
-	fn parse_price(price_str: &str) -> Option<u32> {
-		let val = lite_json::parse_json(price_str);
-		let price = val.ok().and_then(|v| match v {
-			JsonValue::Object(obj) => {
-				let mut chars = "USD".chars();
-				obj.into_iter()
-					.find(|(k, _)| k.iter().all(|k| Some(*k) == chars.next()))
-					.and_then(|v| match v.1 {
-						JsonValue::Number(number) => Some(number),
-						_ => None,
-					})
-			},
-			_ => None
-		})?;
-
-		let exp = price.fraction_length.checked_sub(2).unwrap_or(0);
-		Some(price.integer as u32 * 100 + (price.fraction / 10_u64.pow(exp)) as u32)
+		Ok(price_info.usd)
 	}
 
 }

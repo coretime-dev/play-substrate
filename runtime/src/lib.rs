@@ -271,17 +271,17 @@ impl poe::Trait for Runtime {
 	type Event = Event;
 }
 
-// impl<C> system::offchain::SendTransactionTypes<C> for Runtime where
-// 	Call: From<C>,
-// {
-// 	type OverarchingCall = Call;
-// 	type Extrinsic = UncheckedExtrinsic;
-// }
+impl<C> system::offchain::SendTransactionTypes<C> for Runtime where
+	Call: From<C>,
+{
+	type OverarchingCall = Call;
+	type Extrinsic = UncheckedExtrinsic;
+}
 
-// impl ocw_unsigned::Trait for Runtime {
-// 	type Event = Event;
-// 	type Call = Call;
-// }
+impl ocw_unsigned::Trait for Runtime {
+	type Event = Event;
+	type Call = Call;
+}
 
 // impl system::offchain::SigningTypes for Runtime {
 // 	type Public = <Signature as traits::Verify>::Signer;
@@ -378,7 +378,7 @@ construct_runtime!(
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 		CoinFlipModule: coinflip::{Module, Call, Storage, Event<T>},
 		PoeModule: poe::{Module, Call, Storage, Event<T>},
-		// OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
+		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 		// OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
 		WeightModule: weight::{Module, Call, Storage, Event<T>},
 		DataTypeModule: datatype::{Module, Call, Storage, Event},
