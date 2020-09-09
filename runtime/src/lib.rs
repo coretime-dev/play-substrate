@@ -1,5 +1,3 @@
-//! The Substrate Node Template runtime. This can be compiled with `#[no_std]`, ready for Wasm.
-
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
 #![recursion_limit="256"]
@@ -9,35 +7,30 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use sp_std::prelude::*;
-use sp_core::{
-	crypto::KeyTypeId, OpaqueMetadata,
-};
+use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{
 	ApplyExtrinsicResult, generic, create_runtime_str, impl_opaque_keys, MultiSignature,
 	transaction_validity::{TransactionValidity, TransactionSource},
 };
 use sp_runtime::traits::{
-	self as traits, StaticLookup, BlakeTwo256, Block as BlockT,
-	IdentityLookup, Verify, IdentifyAccount, NumberFor, Saturating,
+	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, IdentifyAccount, NumberFor, Saturating,
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use grandpa::{AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList};
-use grandpa::fg_primitives;
+use pallet_grandpa::{AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList};
+use pallet_grandpa::fg_primitives;
 use sp_version::RuntimeVersion;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
-use ocw_signed::sr25519::AuthorityId as OcwPublic;
-use codec::Encode;
 
 // A few exports that help ease life for downstream crates.
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
-pub use timestamp::Call as TimestampCall;
-pub use balances::Call as BalancesCall;
+pub use pallet_timestamp::Call as TimestampCall;
+pub use pallet_balances::Call as BalancesCall;
 pub use sp_runtime::{Permill, Perbill};
 pub use frame_support::{
-	construct_runtime, parameter_types, StorageValue, debug,
+	construct_runtime, parameter_types, StorageValue,
 	traits::{KeyOwnerProofSystem, Randomness},
 	weights::{
 		Weight, IdentityFee,
@@ -45,7 +38,7 @@ pub use frame_support::{
 	},
 };
 
-/// Importing a template pallet
+/// Import the template pallet.
 pub use template;
 
 /// An index to a block.
@@ -98,7 +91,6 @@ pub mod opaque {
 	}
 }
 
-/// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("node-template"),
 	impl_name: create_runtime_str!("node-template"),
@@ -113,7 +105,7 @@ pub const MILLISECS_PER_BLOCK: u64 = 6000;
 
 pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
 
-// These time units are defined in number of blocks.
+// Time is measured by number of blocks.
 pub const MINUTES: BlockNumber = 60_000 / (MILLISECS_PER_BLOCK as BlockNumber);
 pub const HOURS: BlockNumber = MINUTES * 60;
 pub const DAYS: BlockNumber = HOURS * 24;
@@ -133,13 +125,17 @@ parameter_types! {
 	pub const MaximumBlockWeight: Weight = 2 * WEIGHT_PER_SECOND;
 	pub const AvailableBlockRatio: Perbill = Perbill::from_percent(75);
 	/// Assume 10% of weight for average on_initialize calls.
-	pub const MaximumExtrinsicWeight: Weight = AvailableBlockRatio::get()
+	pub MaximumExtrinsicWeight: Weight = AvailableBlockRatio::get()
 		.saturating_sub(Perbill::from_percent(10)) * MaximumBlockWeight::get();
 	pub const MaximumBlockLength: u32 = 5 * 1024 * 1024;
 	pub const Version: RuntimeVersion = VERSION;
 }
 
-impl system::Trait for Runtime {
+// Configure FRAME pallets to include in runtime.
+
+impl frame_system::Trait for Runtime {
+	/// The basic call filter to use in dispatchable.
+	type BaseCallFilter = ();
 	/// The identifier used to distinguish between accounts.
 	type AccountId = AccountId;
 	/// The aggregated dispatch type that is available for extrinsics.
@@ -191,14 +187,16 @@ impl system::Trait for Runtime {
 	/// What to do if an account is fully reaped from the system.
 	type OnKilledAccount = ();
 	/// The data to be stored in an account.
-	type AccountData = balances::AccountData<Balance>;
+	type AccountData = pallet_balances::AccountData<Balance>;
+	/// Weight information for the extrinsics of this pallet.
+	type SystemWeightInfo = ();
 }
 
-impl aura::Trait for Runtime {
+impl pallet_aura::Trait for Runtime {
 	type AuthorityId = AuraId;
 }
 
-impl grandpa::Trait for Runtime {
+impl pallet_grandpa::Trait for Runtime {
 	type Event = Event;
 	type Call = Call;
 
@@ -219,18 +217,19 @@ parameter_types! {
 	pub const MinimumPeriod: u64 = SLOT_DURATION / 2;
 }
 
-impl timestamp::Trait for Runtime {
+impl pallet_timestamp::Trait for Runtime {
 	/// A timestamp: milliseconds since the unix epoch.
 	type Moment = u64;
 	type OnTimestampSet = Aura;
 	type MinimumPeriod = MinimumPeriod;
+	type WeightInfo = ();
 }
 
 parameter_types! {
 	pub const ExistentialDeposit: u128 = 500;
 }
 
-impl balances::Trait for Runtime {
+impl pallet_balances::Trait for Runtime {
 	/// The type for recording an account's balance.
 	type Balance = Balance;
 	/// The ubiquitous event type.
@@ -238,152 +237,48 @@ impl balances::Trait for Runtime {
 	type DustRemoval = ();
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
+	type WeightInfo = ();
 }
 
 parameter_types! {
 	pub const TransactionByteFee: Balance = 1;
 }
 
-impl transaction_payment::Trait for Runtime {
-	type Currency = balances::Module<Runtime>;
+impl pallet_transaction_payment::Trait for Runtime {
+	type Currency = Balances;
 	type OnTransactionPayment = ();
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = IdentityFee<Balance>;
 	type FeeMultiplierUpdate = ();
 }
 
-impl sudo::Trait for Runtime {
+impl pallet_sudo::Trait for Runtime {
 	type Event = Event;
 	type Call = Call;
 }
 
-/// Used for the module template in `./template.rs`
+/// Configure the pallet template in pallets/template.
 impl template::Trait for Runtime {
 	type Event = Event;
 }
-/// Used for coin flip module
-impl coinflip::Trait for Runtime {
-	type Randomness = randomness_collective_flip::Module<Runtime>;
-	type Event = Event;
-}
 
-impl poe::Trait for Runtime {
-	type Event = Event;
-}
-
-impl<C> system::offchain::SendTransactionTypes<C> for Runtime where
-	Call: From<C>,
-{
-	type OverarchingCall = Call;
-	type Extrinsic = UncheckedExtrinsic;
-}
-
-impl ocw_unsigned::Trait for Runtime {
-	type Event = Event;
-	type Call = Call;
-}
-
-impl system::offchain::SigningTypes for Runtime {
-	type Public = <Signature as traits::Verify>::Signer;
-	type Signature = Signature;
-}
-
-pub struct OcwAuthorityId;
-impl system::offchain::AppCrypto<<Signature as Verify>::Signer, Signature> for OcwAuthorityId {
-	type RuntimeAppPublic = OcwPublic;
-	type GenericSignature = sp_core::sr25519::Signature;
-	type GenericPublic = sp_core::sr25519::Public;
-}
-
-/// The payload being signed in transactions.
-pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
-
-impl<LocalCall> system::offchain::CreateSignedTransaction<LocalCall> for Runtime where
-	Call: From<LocalCall>,
-{
-	fn create_transaction<C: system::offchain::AppCrypto<Self::Public, Self::Signature>>(
-		call: Call,
-		public: <Signature as traits::Verify>::Signer,
-		account: AccountId,
-		nonce: Index,
-	) -> Option<(Call, <UncheckedExtrinsic as traits::Extrinsic>::SignaturePayload)> {
-		// take the biggest period possible.
-		let period = BlockHashCount::get()
-			.checked_next_power_of_two()
-			.map(|c| c / 2)
-			.unwrap_or(2) as u64;
-		let current_block = (System::block_number() as u64)
-			// The `System::block_number` is initialized with `n+1`,
-			// so the actual block number is `n`.
-			.saturating_sub(1);
-		let tip = 0;
-		let extra: SignedExtra = (
-			system::CheckSpecVersion::<Runtime>::new(),
-			system::CheckTxVersion::<Runtime>::new(),
-			system::CheckGenesis::<Runtime>::new(),
-			system::CheckEra::<Runtime>::from(generic::Era::mortal(period, current_block)),
-			system::CheckNonce::<Runtime>::from(nonce),
-			system::CheckWeight::<Runtime>::new(),
-			transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
-		);
-		let raw_payload = SignedPayload::new(call, extra).map_err(|e| {
-			debug::warn!("Unable to create signed payload: {:?}", e);
-		}).ok()?;
-		let signature = raw_payload.using_encoded(|payload| {
-			C::sign(payload, public)
-		})?;
-		let address = IdentityLookup::<AccountId>::unlookup(account);
-		let (call, extra, _) = raw_payload.deconstruct();
-		Some((call, (address, signature.into(), extra)))
-	}
-}
-
-impl ocw_signed::Trait for Runtime {
-	type AuthorityId = OcwAuthorityId;
-	type Event = Event;
-	type Call = Call;
-}
-
-impl weight::Trait for Runtime {
-	type Event = Event;
-}
-
-impl datatype::Trait for Runtime {
-	type Event = Event;
-}
-
-impl genesis_config::Trait for Runtime {
-	type Event = Event;
-}
-
-impl benchmark_demo::Trait for Runtime {
-	type Event = Event;
-}
-
+// Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
 		NodeBlock = opaque::Block,
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
-		System: system::{Module, Call, Config, Storage, Event<T>},
-		RandomnessCollectiveFlip: randomness_collective_flip::{Module, Call, Storage},
-		Timestamp: timestamp::{Module, Call, Storage, Inherent},
-		Aura: aura::{Module, Config<T>, Inherent(Timestamp)},
-		Grandpa: grandpa::{Module, Call, Storage, Config, Event},
-		Balances: balances::{Module, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: transaction_payment::{Module, Storage},
-		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
-		// Used for the module template in `./template.rs`
+		System: frame_system::{Module, Call, Config, Storage, Event<T>},
+		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
+		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
+		Aura: pallet_aura::{Module, Config<T>, Inherent},
+		Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
+		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: pallet_transaction_payment::{Module, Storage},
+		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
+		// Include the custom logic from the template pallet in the runtime.
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
-		CoinFlipModule: coinflip::{Module, Call, Storage, Event<T>},
-		PoeModule: poe::{Module, Call, Storage, Event<T>},
-		OcwUnsignedModule: ocw_unsigned::{Module, Call, Storage, Event<T>, ValidateUnsigned},
-		OcwSignedModule: ocw_signed::{Module, Call, Storage, Event<T>},
-		WeightModule: weight::{Module, Call, Storage, Event<T>},
-		DataTypeModule: datatype::{Module, Call, Storage, Event},
-		GenesisConfigModule: genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
-		BenchmarkDemoModule: benchmark_demo::{Module, Call, Storage, Event<T>},
 	}
 );
 
@@ -399,20 +294,26 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-	system::CheckSpecVersion<Runtime>,
-	system::CheckTxVersion<Runtime>,
-	system::CheckGenesis<Runtime>,
-	system::CheckEra<Runtime>,
-	system::CheckNonce<Runtime>,
-	system::CheckWeight<Runtime>,
-	transaction_payment::ChargeTransactionPayment<Runtime>
+	frame_system::CheckSpecVersion<Runtime>,
+	frame_system::CheckTxVersion<Runtime>,
+	frame_system::CheckGenesis<Runtime>,
+	frame_system::CheckEra<Runtime>,
+	frame_system::CheckNonce<Runtime>,
+	frame_system::CheckWeight<Runtime>,
+	pallet_transaction_payment::ChargeTransactionPayment<Runtime>
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
 /// Extrinsic type that has already been checked.
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
 /// Executive: handles dispatch to the various modules.
-pub type Executive = frame_executive::Executive<Runtime, Block, system::ChainContext<Runtime>, Runtime, AllModules>;
+pub type Executive = frame_executive::Executive<
+	Runtime,
+	Block,
+	frame_system::ChainContext<Runtime>,
+	Runtime,
+	AllModules,
+>;
 
 impl_runtime_apis! {
 	impl sp_api::Core<Block> for Runtime {
@@ -502,7 +403,7 @@ impl_runtime_apis! {
 			Grandpa::grandpa_authorities()
 		}
 
-		fn submit_report_equivocation_extrinsic(
+		fn submit_report_equivocation_unsigned_extrinsic(
 			_equivocation_proof: fg_primitives::EquivocationProof<
 				<Block as BlockT>::Hash,
 				NumberFor<Block>,
@@ -522,35 +423,19 @@ impl_runtime_apis! {
 			None
 		}
 	}
-
-	#[cfg(feature = "runtime-benchmarks")]
-	impl frame_benchmarking::Benchmark<Block> for Runtime {
-		fn dispatch_benchmark(
-			pallet: Vec<u8>,
-			benchmark: Vec<u8>,
-			lowest_range_values: Vec<u32>,
-			highest_range_values: Vec<u32>,
-			steps: Vec<u32>,
-			repeat: u32,
-		) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
-			use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark};
-			// Trying to add benchmarks directly to the Session Pallet caused cyclic dependency issues.
-			// To get around that, we separated the Session benchmarks into its own crate, which is why
-			// we need these two lines below.
-			use frame_system_benchmarking::Module as SystemBench;
-
-			impl frame_system_benchmarking::Trait for Runtime {}
-
-			let mut batches = Vec::<BenchmarkBatch>::new();
-			let params = (&pallet, &benchmark, &lowest_range_values, &highest_range_values, &steps, repeat);
-
-			add_benchmark!(params, batches, b"balances", Balances);
-			add_benchmark!(params, batches, b"benchmark-demo", BenchmarkDemoModule);
-			add_benchmark!(params, batches, b"system", SystemBench::<Runtime>);
-
-			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
-			Ok(batches)
+	
+	impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Index> for Runtime {
+		fn account_nonce(account: AccountId) -> Index {
+			System::account_nonce(account)
 		}
 	}
 
+	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance> for Runtime {
+		fn query_info(
+			uxt: <Block as BlockT>::Extrinsic,
+			len: u32,
+		) -> pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo<Balance> {
+			TransactionPayment::query_info(uxt, len)
+		}
+	}
 }
