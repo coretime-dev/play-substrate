@@ -17,13 +17,16 @@ impl_outer_origin! {
 // configuration traits of pallets we want to use.
 #[derive(Clone, Eq, PartialEq)]
 pub struct Test;
+
 parameter_types! {
 	pub const BlockHashCount: u64 = 250;
 	pub const MaximumBlockWeight: Weight = 1024;
 	pub const MaximumBlockLength: u32 = 2 * 1024;
 	pub const AvailableBlockRatio: Perbill = Perbill::from_percent(75);
 }
+
 impl frame_system::Trait for Test {
+	type BaseCallFilter = ();
 	type Origin = Origin;
 	type Call = ();
 	type Index = u64;
@@ -36,25 +39,31 @@ impl frame_system::Trait for Test {
 	type Event = ();
 	type BlockHashCount = BlockHashCount;
 	type MaximumBlockWeight = MaximumBlockWeight;
+	type DbWeight = ();
+	type BlockExecutionWeight = ();
+	type ExtrinsicBaseWeight = ();
+	type MaximumExtrinsicWeight = MaximumBlockWeight;
 	type MaximumBlockLength = MaximumBlockLength;
 	type AvailableBlockRatio = AvailableBlockRatio;
 	type Version = ();
 	type ModuleToIndex = ();
-	type AccountData = balances::AccountData<u64>;
+	type AccountData = pallet_balances::AccountData<u64>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
+	type SystemWeightInfo = ();
 }
 
 parameter_types! {
 	pub const ExistentialDeposit: u64 = 1;
 }
 
-impl balances::Trait for Test {
+impl pallet_balances::Trait for Test {
 	type Balance = u64;
 	type Event = ();
 	type DustRemoval = ();
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
+	type WeightInfo = ();
 }
 
 impl Randomness<<Test as frame_system::Trait>::Hash> for CoinFlipModule {
@@ -73,7 +82,7 @@ impl Trait for Test {
 }
 
 pub type System = frame_system::Module<Test>;
-pub type Balances = balances::Module<Test>;
+pub type Balances = pallet_balances::Module<Test>;
 pub type CoinFlipModule = Module<Test>;
 
 // This function basically just builds a genesis storage key/value store according to
@@ -81,7 +90,7 @@ pub type CoinFlipModule = Module<Test>;
 pub fn new_test_ext() -> sp_io::TestExternalities {
 	let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 
-	balances::GenesisConfig::<Test> {
+	pallet_balances::GenesisConfig::<Test> {
 		balances: vec![
 			(1, 10),
 			(2, 20),

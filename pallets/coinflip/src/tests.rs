@@ -4,7 +4,7 @@ use crate::{Error, mock::*};
 use frame_support::{assert_ok, assert_noop};
 use sp_runtime::traits::BadOrigin;
 use super::*;
-use balances::Error as BalancesError;
+use pallet_balances::Error as BalancesError;
 
 #[test]
 fn set_payment_should_work() {
@@ -27,7 +27,7 @@ fn set_payment_should_work() {
 fn play_security_check_should_work() {
 	new_test_ext().execute_with(|| {
 		// Test ensure_signed
-		assert_noop!(CoinFlipModule::play(Origin::ROOT), BadOrigin);
+		assert_noop!(CoinFlipModule::play(Origin::root()), BadOrigin);
 
 		// Ensure the correct error if payment not set
 		assert_noop!(CoinFlipModule::play(Origin::signed(2)), Error::<Test>::NonePaymentValue);
