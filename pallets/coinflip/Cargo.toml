@@ -1,11 +1,11 @@
 [package]
-authors = ['Anonymous']
+authors = ['kaichao']
 description = 'FRAME coin flip game pallet'
 edition = '2018'
 homepage = 'https://substrate.dev'
 license = 'Unlicense'
 name = 'pallet-coinflip'
-repository = 'https://github.com/paritytech/substrate/'
+repository = 'https://github.com/kaichaosun/play-substrate/'
 version = '2.0.0-rc6'
 
 [package.metadata.docs.rs]
@@ -15,7 +15,7 @@ targets = ['x86_64-unknown-linux-gnu']
 default-features = false
 features = ['derive']
 package = 'parity-scale-codec'
-version = '1.3.0'
+version = '1.3.4'
 
 [dependencies.frame-support]
 default-features = false

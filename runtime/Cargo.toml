@@ -171,6 +171,12 @@ package = 'pallet-poe'
 path = '../pallets/poe'
 version = '2.0.0-rc6'
 
+[dependencies.coinflip]
+default-features = false
+package = 'pallet-coinflip'
+path = '../pallets/coinflip'
+version = '2.0.0-rc6'
+
 [features]
 default = ['std']
 std = [
@@ -201,6 +207,7 @@ std = [
     'sp-version/std',
     'template/std',
     'poe/std',
+    'coinflip/std',
 ]
 
 [build-dependencies.wasm-builder-runner]

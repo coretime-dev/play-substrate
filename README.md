@@ -5,11 +5,12 @@
 * Template
 * Proof of Existence
 * Coin flip game 
-* Offchain worker (unsigned transaction)
-* Offchain worker (signed transaction)
-* Weight demo
 * Data type
 * Genesis config demo
+* Offchain worker (unsigned transaction)
+* Offchain worker (signed transaction)
+* Weight
+* Benchmark demo
 
 A new FRAME-based Substrate node, ready for hacking.
 
