@@ -16,12 +16,6 @@ use frame_system::{
 };
 use sp_std::vec::Vec;
 
-#[cfg(test)]
-mod mock;
-
-#[cfg(test)]
-mod tests;
-
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait {
 	/// The overarching event type.
