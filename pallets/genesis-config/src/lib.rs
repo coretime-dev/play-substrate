@@ -10,20 +10,14 @@
 /// https://github.com/paritytech/substrate/blob/master/frame/example/src/lib.rs
 
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch};
-use frame_system::{self as system, ensure_signed};
-
-#[cfg(test)]
-mod mock;
-
-#[cfg(test)]
-mod tests;
+use frame_system::ensure_signed;
 
 /// The pallet's configuration trait.
-pub trait Trait: system::Trait {
+pub trait Trait: frame_system::Trait {
 	// Add other types and constants required to configure this pallet.
 
 	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
+	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
 }
 
 // This pallet's storage items.
@@ -55,7 +49,7 @@ decl_storage! {
 
 // The pallet's events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as system::Trait>::AccountId {
+	pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId {
 		/// Just a dummy event.
 		/// Event `Something` is declared with a parameter of the type `u32` and `AccountId`
 		/// To emit this event, we call the deposit function, from our runtime functions

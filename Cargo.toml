@@ -8,5 +8,6 @@ members = [
     'pallets/poe',
     'pallets/coinflip',
     'pallets/data-type',
+    'pallets/genesis-config',
     'runtime',
 ]

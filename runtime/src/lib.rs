@@ -279,6 +279,10 @@ impl pallet_data_type::Trait for Runtime {
 	type Event = Event;
 }
 
+impl pallet_genesis_config::Trait for Runtime {
+	type Event = Event;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -299,6 +303,7 @@ construct_runtime!(
 		PoeModule: pallet_poe::{Module, Call, Storage, Event<T>},
 		CoinFlipModule: pallet_coinflip::{Module, Call, Storage, Event<T>},
 		DataTypeModule: pallet_data_type::{Module, Call, Storage, Event},
+		GenesisConfigModule: pallet_genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
 	}
 );
 
