@@ -13,7 +13,7 @@ use frame_support::{
 	decl_module, decl_storage, decl_event, decl_error, dispatch::DispatchResult,
 	debug,
 };
-use frame_system::{self as system, ensure_signed};
+use frame_system::ensure_signed;
 use sp_std::prelude::*;
 use sp_runtime::{
 	Permill,
@@ -60,11 +60,11 @@ pub struct People {
 }
 
 /// The pallet's configuration trait.
-pub trait Trait: system::Trait + pallet_timestamp::Trait {
+pub trait Trait: frame_system::Trait + pallet_timestamp::Trait {
 	// Add other types and constants required to configure this pallet.
 
 	/// The overarching event type.
-	type Event: From<Event> + Into<<Self as system::Trait>::Event>;
+	type Event: From<Event> + Into<<Self as frame_system::Trait>::Event>;
 }
 
 // This pallet's storage items.

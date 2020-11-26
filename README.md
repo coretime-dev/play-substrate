@@ -2,6 +2,8 @@
 
 ## Runtime modules
 
+Disclaimer: these modules are for learning purpose, you should never use them in *production*.
+
 * Template
 * Proof of Existence
 * Coin flip game 

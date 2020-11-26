@@ -7,5 +7,6 @@ members = [
     'pallets/template',
     'pallets/poe',
     'pallets/coinflip',
+    'pallets/data-type',
     'runtime',
 ]
