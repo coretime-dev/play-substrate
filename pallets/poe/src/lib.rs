@@ -16,6 +16,11 @@ use frame_system::{
 };
 use sp_std::vec::Vec;
 
+#[cfg(test)]
+mod mock;
+
+#[cfg(test)]
+mod tests;
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait {
 	/// The overarching event type.
@@ -40,7 +45,7 @@ decl_event!(
 // The pallet's errors
 decl_error! {
 	pub enum Error for Module<T: Trait> {
-		DuplicateClaim,
+		ProofAlreadyExist,
 		ClaimNotExist,
 		NotClaimOwner,
 	}
@@ -63,7 +68,7 @@ decl_module! {
 		pub fn create_claim(origin, claim: Vec<u8>) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
 
-			ensure!(!Proofs::<T>::contains_key(&claim), Error::<T>::DuplicateClaim);
+			ensure!(!Proofs::<T>::contains_key(&claim), Error::<T>::ProofAlreadyExist);
 			
 			Proofs::<T>::insert(&claim, (sender.clone(), system::Module::<T>::block_number()));
 
