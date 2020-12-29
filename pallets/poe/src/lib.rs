@@ -94,5 +94,20 @@ decl_module! {
 			Ok(())
 		}
 
+		#[weight = 0]
+		pub fn transfer_claim(origin, claim: Vec<u8>, dest: T::AccountId) -> DispatchResult {
+			let sender = ensure_signed(origin)?;
+
+			ensure!(Proofs::<T>::contains_key(&claim), Error::<T>::ClaimNotExist);
+
+			let (owner, _block_number) = Proofs::<T>::get(&claim);
+
+			ensure!(owner == sender, Error::<T>::NotClaimOwner);
+
+			Proofs::<T>::insert(&claim, (dest, system::Module::<T>::block_number()));
+
+			Ok(())
+		}
+
 	}
 }
