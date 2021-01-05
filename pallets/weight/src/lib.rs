@@ -160,6 +160,7 @@ decl_module! {
 			Ok(())
 		}
 
+		/// FunctionOf is deprecated and not suggest to use any more.
 		/// Just a dummy dispatchable call for FunctionOf weight.
 		#[weight = FunctionOf(|args: (&u32,)| (args.0 * 10) as Weight, DispatchClass::Normal, Pays::Yes)]
 		pub fn function_of_weight(origin, something: u32) -> dispatch::DispatchResult {
