@@ -30,6 +30,7 @@ pallet-poe = { path = '../pallets/poe', default-features = false, version = '2.0
 pallet-coinflip = { path = '../pallets/coinflip', default-features = false, version = '2.0.0' }
 pallet-data-type = { path = '../pallets/data-type', default-features = false, version = '2.0.0' }
 pallet-genesis-config = { path = '../pallets/genesis-config', default-features = false, version = '2.0.0' }
+pallet-weight = { path = '../pallets/weight', default-features = false, version = '2.0.0' }
 pallet-benchmark-demo = { path = '../pallets/benchmark-demo', default-features = false, version = '2.0.0' }
 
 # Substrate dependencies
@@ -90,6 +91,7 @@ std = [
     'pallet-coinflip/std',
     'pallet-data-type/std',
     'pallet-genesis-config/std',
+    'pallet-weight/std',
     'pallet-benchmark-demo/std',
 
     'pallet-timestamp/std',

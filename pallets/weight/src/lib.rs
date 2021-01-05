@@ -24,12 +24,6 @@ use frame_support::{
 use frame_system::{self as system, ensure_signed};
 use sp_runtime::traits::SaturatedConversion;
 
-#[cfg(test)]
-mod mock;
-
-#[cfg(test)]
-mod tests;
-
 struct WeightForCustomWeight(u32);
 
 impl WeighData<(&u32,)> for WeightForCustomWeight {

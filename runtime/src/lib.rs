@@ -283,6 +283,10 @@ impl pallet_genesis_config::Trait for Runtime {
 	type Event = Event;
 }
 
+impl pallet_weight::Trait for Runtime {
+	type Event = Event;
+}
+
 impl pallet_benchmark_demo::Trait for Runtime {
 	type Event = Event;
 }
@@ -308,6 +312,7 @@ construct_runtime!(
 		CoinFlipModule: pallet_coinflip::{Module, Call, Storage, Event<T>},
 		DataTypeModule: pallet_data_type::{Module, Call, Storage, Event},
 		GenesisConfigModule: pallet_genesis_config::{Module, Call, Storage, Event<T>, Config<T>},
+		WeightModule: pallet_weight::{Module, Call, Storage, Event<T>},
 		BenchmarkDemoModule: pallet_benchmark_demo::{Module, Call, Storage, Event<T>},
 	}
 );
