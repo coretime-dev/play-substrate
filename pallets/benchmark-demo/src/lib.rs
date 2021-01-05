@@ -70,10 +70,10 @@ decl_module! {
 		/// function that can be called by the external world as an extrinsics call
 		/// takes a parameter of the type `AccountId`, stores it, and emits an event
 		/// # <weight>
-		/// - Base Weight: 31.76 µs
+		/// - Base Weight: 44.66 µs
 		/// - DB Weight: 1 Write
 		/// # </weight>
-		#[weight = T::DbWeight::get().writes(1) + 32_000_000]
+		#[weight = T::DbWeight::get().writes(1) + 44_660_000]
 		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
 			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;
