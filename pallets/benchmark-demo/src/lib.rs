@@ -10,11 +10,7 @@ use frame_support::{
 };
 use frame_system::{self as system, ensure_signed};
 
-#[cfg(test)]
-mod mock;
-
-#[cfg(test)]
-mod tests;
+mod benchmarking;
 
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait {
@@ -91,42 +87,5 @@ decl_module! {
 			Ok(())
 		}
 
-	}
-}
-
-#[cfg(feature = "runtime-benchmarks")]
-mod benchmarking {
-	use super::*;
-	use frame_benchmarking::{benchmarks, account};
-	use frame_system::RawOrigin;
-	use sp_std::prelude::*;
-
-	benchmarks!{
-		_ {
-			let b in 1 .. 1000 => ();
-		}
-
-		do_something {
-			let b in ...;
-			let caller = account("caller", 0, 0);
-		}: _ (RawOrigin::Signed(caller), b.into())
-		verify {
-			let value = Something::get();
-			assert_eq!(value, b.into());
-		}
-	}
-
-	#[cfg(test)]
-	mod tests {
-		use super::*;
-		use crate::mock::{new_test_ext, Test};
-		use frame_support::assert_ok;
-
-		#[test]
-		fn test_benchmarks() {
-			new_test_ext().execute_with(|| {
-				assert_ok!(test_benchmark_do_something::<Test>());
-			});
-		}
 	}
 }
