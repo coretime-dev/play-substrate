@@ -9,5 +9,6 @@ members = [
     'pallets/coinflip',
     'pallets/data-type',
     'pallets/genesis-config',
+    'pallets/weight',
     'runtime',
 ]
