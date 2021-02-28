@@ -5,11 +5,11 @@ panic = 'unwind'
 members = [
     'node',
     'pallets/template',
-    'pallets/poe',
-    'pallets/coinflip',
-    'pallets/data-type',
-    'pallets/genesis-config',
-    'pallets/weight',
-    'pallets/benchmark-demo',
+    # 'pallets/poe',
+    # 'pallets/coinflip',
+    # 'pallets/data-type',
+    # 'pallets/genesis-config',
+    # 'pallets/weight',
+    # 'pallets/benchmark-demo',
     'runtime',
 ]

@@ -1,7 +1,7 @@
 use sp_core::{Pair, Public, sr25519};
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
-	SudoConfig, SystemConfig, GenesisConfigModuleConfig, WASM_BINARY, Signature
+	SudoConfig, SystemConfig, WASM_BINARY, Signature
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -153,10 +153,10 @@ fn testnet_genesis(
 			// Assign network admin rights.
 			key: root_key,
 		}),
-		pallet_genesis_config: Some(GenesisConfigModuleConfig {
-			something: 9,
-			something_two: 10,
-			some_account_value: endowed_accounts.iter().cloned().map(|k|(k, 2)).collect(),
-		})
+		// pallet_genesis_config: Some(GenesisConfigModuleConfig {
+		// 	something: 9,
+		// 	something_two: 10,
+		// 	some_account_value: endowed_accounts.iter().cloned().map(|k|(k, 2)).collect(),
+		// })
 	}
 }
