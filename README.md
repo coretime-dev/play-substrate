@@ -9,8 +9,8 @@ Disclaimer: these modules are for learning purpose, you should never use them in
 * Coin flip game 
 * Data type
 * Genesis config demo
-* Offchain worker (unsigned transaction)
-* Offchain worker (signed transaction)
+* Offchain worker - send unsigned transaction (outdated)
+* Offchain worker - send signed transaction (outdated)
 * Weight
 * Benchmark demo
 
