@@ -2,86 +2,59 @@
 
 /// A FRAME pallet for coin flip game
 
-/// For more guidance on Substrate FRAME, see the example pallet
-/// https://github.com/paritytech/substrate/blob/master/frame/example/src/lib.rs
+pub use pallet::*;
 
-use frame_support::{
-	decl_module,
-	decl_storage,
-	decl_event,
-	decl_error,
-	dispatch::DispatchResult,
-};
-use frame_system::{self as system, ensure_signed};
-use frame_support::traits::{Currency, WithdrawReason, ExistenceRequirement, Randomness};
-use sp_runtime::traits::{Zero, Hash, Saturating};
-use codec::Encode;
+#[frame_support::pallet]
+pub mod pallet {
+	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
+	use frame_system::pallet_prelude::*;
+	use frame_support::traits::{Currency, WithdrawReasons, ExistenceRequirement, Randomness};
+	use sp_runtime::traits::{Zero, Hash, Saturating};
 
-#[cfg(test)]
-mod mock;
+	#[pallet::config]
+	pub trait Config: frame_system::Config + pallet_balances::Config {
+		type Randomness: Randomness<Self::Hash>;
 
-#[cfg(test)]
-mod tests;
-
-/// The pallet's configuration trait.
-pub trait Trait: pallet_balances::Trait {
-	// The dependency that generates random seed
-	type Randomness: Randomness<Self::Hash>;
-
-	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
-}
-
-// This pallet's storage items.
-decl_storage! {
-	trait Store for Module<T: Trait> as CoinFlipModule {
-		// The fee that a player need to pay for the game
-		pub Payment get(fn payment): Option<T::Balance>;
-		
-		// The jackpot holds available latest rewards
-		pub Pot get(fn pot): T::Balance;
-
-		Nonce get(fn nonce): u64;
+		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 	}
-}
 
-// The pallet's events
-decl_event!(
-	pub enum Event<T> where
-		AccountId = <T as system::Trait>::AccountId,
-		Balance = <T as pallet_balances::Trait>::Balance {
-		/// Emit this event when payment was set
-		PaymentSet(Balance),
+	#[pallet::pallet]
+	#[pallet::generate_store(pub(super) trait Store)]
+	pub struct Pallet<T>(_);
 
-		/// Emit this event when a user play the game
-		PlayResult(AccountId, Balance),
+	#[pallet::storage]
+	#[pallet::getter(fn payment)]
+	pub type Payment<T: Config> = StorageValue<_, T::Balance>;
+
+	#[pallet::storage]
+	#[pallet::getter(fn pot)]
+	pub type Pot<T: Config> = StorageValue<_, T::Balance, ValueQuery>;
+
+	#[pallet::storage]
+	#[pallet::getter(fn nonce)]
+	pub type Nonce<T> = StorageValue<_, u64, ValueQuery>;
+
+	#[pallet::event]
+	#[pallet::metadata(T::AccountId = "AccountId", T::Balance = "Balance")]
+	#[pallet::generate_deposit(pub(super) fn deposit_event)]
+	pub enum Event<T: Config> {
+		PaymentSet(T::Balance),
+		PlayResult(T::AccountId, T::Balance),
 	}
-);
 
-// The pallet's errors
-decl_error! {
-	pub enum Error for Module<T: Trait> {
-		/// Value was None
+	#[pallet::error]
+	pub enum Error<T> {
 		NonePaymentValue,
 	}
-}
 
-// The pallet's dispatchable functions.
-decl_module! {
-	/// The module declaration.
-	pub struct Module<T: Trait> for enum Call where origin: T::Origin {
-		// Initializing errors
-		// this includes information about your errors in the node's metadata.
-		// it is needed only if you are using errors in your pallet
-		type Error = Error<T>;
+	#[pallet::hooks]
+	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {}
 
-		// Initializing events
-		// this is needed only if you are using events in your pallet
-		fn deposit_event() = default;
-
+	#[pallet::call]
+	impl<T: Config> Pallet<T> {
 		/// Start the game by initialize the storage items.
-		#[weight = 0]
-		fn set_payment(origin, value: T::Balance) -> DispatchResult {
+		#[pallet::weight(0)]
+		fn set_payment(origin: OriginFor<T>, value: T::Balance) -> DispatchResultWithPostInfo {
 			// Ensure the function call is a signed message (i.e. a transaction)
 			ensure_signed(origin)?;
 
@@ -94,15 +67,15 @@ decl_module! {
 				<Pot<T>>::put(value);
 
 				// Raise an event for the set payment
-				Self::deposit_event(RawEvent::PaymentSet(value));
+				Self::deposit_event(Event::PaymentSet(value));
 			}
 
-			Ok(())
+			Ok(().into())
 		}
 		
 		/// This function allow a user to play our coin flip game
-		#[weight = 0]
-		fn play(origin) -> DispatchResult {
+		#[pallet::weight(0)]
+		fn play(origin: OriginFor<T>) -> DispatchResultWithPostInfo {
 			// Ensure that the function call is a signed message (i.e. a transaction)
 			let sender = ensure_signed(origin)?;
 
@@ -114,7 +87,7 @@ decl_module! {
 			let mut pot = Self::pot();
 
 			// Try to withdraw the payment from the account, making sure that it will not kill the account
-			let _ = <pallet_balances::Module<T> as Currency<_>>::withdraw(&sender, payment, WithdrawReason::Reserve.into(), ExistenceRequirement::KeepAlive)?;
+			let _ = <pallet_balances::Pallet<T> as Currency<_>>::withdraw(&sender, payment, WithdrawReasons::RESERVE.into(), ExistenceRequirement::KeepAlive)?;
 
 			let mut winnings = Zero::zero();
 
@@ -125,7 +98,7 @@ decl_module! {
 			// as_ref returns an array of u8
 			if seed_arr[seed_arr.len() - 1] < 128 {
 				// If the user won the coin flip, deposit the pot winnings; cannot fail
-				let _ = <pallet_balances::Module<T> as Currency<_>>::deposit_into_existing(&sender, pot)
+				let _ = <pallet_balances::Pallet<T> as Currency<_>>::deposit_into_existing(&sender, pot)
 					.expect("`sender` must exist since a transaction is being make and withdraw will keep alive; qed.");
 				
 				// Set the winnings
@@ -143,13 +116,13 @@ decl_module! {
 
 			// Store the updated value for our storage items
 			<Pot<T>>::put(pot);
-			Nonce::put(nonce);
+			Nonce::<T>::put(nonce);
 
 			// Raise event for the play result
-			Self::deposit_event(RawEvent::PlayResult(sender, winnings));
+			Self::deposit_event(Event::PlayResult(sender, winnings));
 
-			Ok(())
+			Ok(().into())
 		}
-
 	}
+
 }

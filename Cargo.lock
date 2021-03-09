@@ -3522,6 +3522,7 @@ dependencies = [
  "hex-literal",
  "pallet-aura",
  "pallet-balances",
+ "pallet-coinflip",
  "pallet-grandpa",
  "pallet-poe",
  "pallet-randomness-collective-flip",
@@ -3725,6 +3726,19 @@ dependencies = [
  "serde",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-coinflip"
+version = "3.0.0"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
 ]
 
 [[package]]

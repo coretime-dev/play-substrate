@@ -27,7 +27,7 @@ serde = { features = ['derive'], optional = true, version = '1.0.119' }
 # local dependencies
 pallet-template = { path = '../pallets/template', default-features = false, version = '3.0.0' }
 pallet-poe = { path = '../pallets/poe', default-features = false, version = '3.0.0' }
-# pallet-coinflip = { path = '../pallets/coinflip', default-features = false, version = '2.0.0' }
+pallet-coinflip = { path = '../pallets/coinflip', default-features = false, version = '3.0.0' }
 # pallet-data-type = { path = '../pallets/data-type', default-features = false, version = '2.0.0' }
 # pallet-genesis-config = { path = '../pallets/genesis-config', default-features = false, version = '2.0.0' }
 # pallet-weight = { path = '../pallets/weight', default-features = false, version = '2.0.0' }
@@ -88,7 +88,7 @@ std = [
     
     'pallet-template/std',
     'pallet-poe/std',
-    # 'pallet-coinflip/std',
+    'pallet-coinflip/std',
     # 'pallet-data-type/std',
     # 'pallet-genesis-config/std',
     # 'pallet-weight/std',
