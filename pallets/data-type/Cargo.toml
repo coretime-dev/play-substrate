@@ -1,12 +1,12 @@
 [package]
 authors = ['Kaichao <kaichaosuna@gmail.com>']
-description = 'A pallet to experience data type of runtime storage.'
+description = 'A pallet to show different data type of runtime storage.'
 edition = '2018'
 homepage = 'https://substrate.dev'
 license = 'Unlicense'
 name = 'pallet-data-type'
-repository = 'https://github.com/kaichaosun/play-substrate/'
-version = '2.0.0'
+repository = 'https://github.com/kaichaosun/play-substrate'
+version = '3.0.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -16,18 +16,18 @@ targets = ['x86_64-unknown-linux-gnu']
 default-features = false
 features = ['derive']
 package = 'parity-scale-codec'
-version = '1.3.4'
+version = '2.0.0'
 
 [dependencies]
-frame-support = { default-features = false, version = '2.0.0' }
-frame-system = { default-features = false, version = '2.0.0' }
-pallet-timestamp = { default-features = false, version = '2.0.0' }
-sp-core = { default-features = false, version = '2.0.0' }
-sp-runtime = { default-features = false, version = '2.0.0' }
-sp-std = { default-features = false, version = '2.0.0' }
+frame-support = { default-features = false, version = '3.0.0' }
+frame-system = { default-features = false, version = '3.0.0' }
+pallet-timestamp = { default-features = false, version = '3.0.0' }
+sp-core = { default-features = false, version = '3.0.0' }
+sp-runtime = { default-features = false, version = '3.0.0' }
+sp-std = { default-features = false, version = '3.0.0' }
 
 [dev-dependencies]
-sp-io = { default-features = false, version = '2.0.0' }
+sp-io = { default-features = false, version = '3.0.0' }
 
 [features]
 default = ['std']
