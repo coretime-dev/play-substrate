@@ -10,6 +10,6 @@ members = [
     # 'pallets/data-type',
     # 'pallets/genesis-config',
     # 'pallets/weight',
-    # 'pallets/benchmark-demo',
+    'pallets/benchmark-demo',
     'runtime',
 ]

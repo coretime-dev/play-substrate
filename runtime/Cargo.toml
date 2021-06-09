@@ -31,7 +31,7 @@ pallet-coinflip = { path = '../pallets/coinflip', default-features = false, vers
 # pallet-data-type = { path = '../pallets/data-type', default-features = false, version = '2.0.0' }
 # pallet-genesis-config = { path = '../pallets/genesis-config', default-features = false, version = '2.0.0' }
 # pallet-weight = { path = '../pallets/weight', default-features = false, version = '2.0.0' }
-# pallet-benchmark-demo = { path = '../pallets/benchmark-demo', default-features = false, version = '2.0.0' }
+pallet-benchmark-demo = { path = '../pallets/benchmark-demo', default-features = false, version = '3.0.0' }
 
 # Substrate dependencies
 frame-benchmarking = { default-features = false, optional = true, version = '3.0.0' }
@@ -70,7 +70,7 @@ runtime-benchmarks = [
     'frame-system/runtime-benchmarks',
     'pallet-balances/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
-    # 'pallet-benchmark-demo/runtime-benchmarks',
+    'pallet-benchmark-demo/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
 ]
 std = [
@@ -92,7 +92,7 @@ std = [
     # 'pallet-data-type/std',
     # 'pallet-genesis-config/std',
     # 'pallet-weight/std',
-    # 'pallet-benchmark-demo/std',
+    'pallet-benchmark-demo/std',
 
     'pallet-timestamp/std',
     'pallet-transaction-payment/std',

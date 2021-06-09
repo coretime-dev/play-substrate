@@ -9,16 +9,12 @@ use frame_system::RawOrigin;
 use sp_std::prelude::*;
 
 benchmarks!{
-	_ {
-		let b in 1 .. 1000 => ();
-	}
-
 	do_something {
-		let b in ...;
+		let b in 1 .. 1000;
 		let caller = account("caller", 0, 0);
 	}: _ (RawOrigin::Signed(caller), b.into())
 	verify {
-		let value = Something::get();
+		let value = Something::<T>::get();
 		assert_eq!(value, b.into());
 	}
 }

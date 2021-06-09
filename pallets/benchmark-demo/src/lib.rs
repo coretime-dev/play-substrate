@@ -2,90 +2,84 @@
 
 /// A FRAME pallet for demo benchmark
 
-use frame_support::{
-	decl_module, decl_storage, decl_event, decl_error, dispatch,
-	traits::{
-		Get
-	},
-};
-use frame_system::{self as system, ensure_signed};
+pub use pallet::*;
 
 mod benchmarking;
+pub mod weights;
 
-/// The pallet's configuration trait.
-pub trait Trait: system::Trait {
-	// Add other types and constants required to configure this pallet.
+#[frame_support::pallet]
+pub mod pallet {
+	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
+	use frame_system::pallet_prelude::*;
+	pub use crate::weights::WeightInfo;
 
-	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
-}
+	/// Configure the pallet by specifying the parameters and types on which it depends.
+	#[pallet::config]
+	pub trait Config: frame_system::Config {
+		/// Because this pallet emits events, it depends on the runtime's definition of an event.
+		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 
-// This pallet's storage items.
-decl_storage! {
-	// It is important to update your storage name so that your pallet's
-	// storage items are isolated from other pallets.
-	// ---------------------------------vvvvvvvvvvvvvv
-	trait Store for Module<T: Trait> as TemplateModule {
-		// Just a dummy storage item.
-		// Here we are declaring a StorageValue, `Something` as a Option<u32>
-		// `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
-		Something get(fn something): Option<u32>;
+		/// Information on runtime weights.
+		type WeightInfo: WeightInfo;
 	}
-}
 
-// The pallet's events
-decl_event!(
-	pub enum Event<T> where AccountId = <T as system::Trait>::AccountId {
-		/// Just a dummy event.
-		/// Event `Something` is declared with a parameter of the type `u32` and `AccountId`
-		/// To emit this event, we call the deposit function, from our runtime functions
-		SomethingStored(u32, AccountId),
+	#[pallet::pallet]
+	#[pallet::generate_store(pub(super) trait Store)]
+	pub struct Pallet<T>(_);
+
+	// The pallet's runtime storage items.
+	// https://substrate.dev/docs/en/knowledgebase/runtime/storage
+	// Learn more about declaring storage items:
+	// https://substrate.dev/docs/en/knowledgebase/runtime/storage#declaring-storage-items
+	#[pallet::storage]
+	#[pallet::getter(fn something)]
+	pub type Something<T> = StorageValue<_, u32>;
+
+	// Pallets use events to inform users when important changes are made.
+	// https://substrate.dev/docs/en/knowledgebase/runtime/events
+	#[pallet::event]
+	#[pallet::metadata(T::AccountId = "AccountId")]
+	#[pallet::generate_deposit(pub(super) fn deposit_event)]
+	pub enum Event<T: Config> {
+		/// Event documentation should end with an array that provides descriptive names for event
+		/// parameters. [something, who] 
+		SomethingStored(u32, T::AccountId),
 	}
-);
 
-// The pallet's errors
-decl_error! {
-	pub enum Error for Module<T: Trait> {
-		/// Value was None
+	// Errors inform users that something went wrong.
+	#[pallet::error]
+	pub enum Error<T> {
+		/// Error names should be descriptive.
 		NoneValue,
-		/// Value reached maximum and cannot be incremented further
+		/// Errors should have helpful documentation associated with them.
 		StorageOverflow,
 	}
-}
 
-// The pallet's dispatchable functions.
-decl_module! {
-	/// The module declaration.
-	pub struct Module<T: Trait> for enum Call where origin: T::Origin {
-		// Initializing errors
-		// this includes information about your errors in the node's metadata.
-		// it is needed only if you are using errors in your pallet
-		type Error = Error<T>;
+	#[pallet::hooks]
+	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {}
 
-		// Initializing events
-		// this is needed only if you are using events in your pallet
-		fn deposit_event() = default;
-
-		/// Just a dummy entry point.
-		/// function that can be called by the external world as an extrinsics call
-		/// takes a parameter of the type `AccountId`, stores it, and emits an event
-		/// # <weight>
-		/// - Base Weight: 44.66 µs
-		/// - DB Weight: 1 Write
-		/// # </weight>
-		#[weight = T::DbWeight::get().writes(1) + 44_660_000]
-		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
-			// Check it was signed and get the signer. See also: ensure_root and ensure_none
+	// Dispatchable functions allows users to interact with the pallet and invoke state changes.
+	// These functions materialize as "extrinsics", which are often compared to transactions.
+	// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
+	#[pallet::call]
+	impl<T: Config> Pallet<T> {
+		/// An example dispatchable that takes a single value as a parameter, writes the value to
+		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
+		#[pallet::weight(T::WeightInfo::do_something(*something))]
+		pub fn do_something(origin: OriginFor<T>, something: u32) -> DispatchResultWithPostInfo {
+			// Check that the extrinsic was signed and get the signer.
+			// This function will return an error if the extrinsic is not signed.
+			// https://substrate.dev/docs/en/knowledgebase/runtime/origin
 			let who = ensure_signed(origin)?;
 
-			// Code to execute when something calls this.
-			// For example: the following line stores the passed in u32 in the storage
-			Something::put(something);
+			// Update storage.
+			<Something<T>>::put(something);
 
-			// Here we are raising the Something event
-			Self::deposit_event(RawEvent::SomethingStored(something, who));
-			Ok(())
+			// Emit an event.
+			Self::deposit_event(Event::SomethingStored(something, who));
+			// Return a successful DispatchResultWithPostInfo
+			Ok(().into())
 		}
-
 	}
+
 }
