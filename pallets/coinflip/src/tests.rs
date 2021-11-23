@@ -2,6 +2,7 @@
 
 use crate::{Error, mock::*};
 use frame_support::{assert_ok, assert_noop};
+use frame_support::traits::Currency;
 use sp_runtime::traits::BadOrigin;
 use super::*;
 use pallet_balances::Error as BalancesError;
@@ -53,7 +54,7 @@ fn play_should_work_for_win() {
 	new_test_ext().execute_with(|| {
 		<Payment<Test>>::put(10);
 		<Pot<Test>>::put(30);
-		Nonce::put(0);
+		<Nonce<Test>>::put(0);
 
 		assert_ok!(CoinFlipModule::play(Origin::signed(2)));
 		assert_eq!(CoinFlipModule::payment(), Some(10));
@@ -68,7 +69,7 @@ fn play_should_work_for_lose() {
 	new_test_ext().execute_with(|| {
 		<Payment<Test>>::put(10);
 		<Pot<Test>>::put(30);
-		Nonce::put(1);
+		<Nonce<Test>>::put(1);
 
 		assert_ok!(CoinFlipModule::play(Origin::signed(2)));
 		assert_eq!(CoinFlipModule::payment(), Some(10));

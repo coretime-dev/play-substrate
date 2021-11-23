@@ -28,7 +28,6 @@ scale-info = { default-features = false, features = ['derive'], version = '1.0' 
 sp-core = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-# serde = { version = "1.0.101" }
 
 [features]
 default = ['std']

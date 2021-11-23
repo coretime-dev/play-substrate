@@ -4,6 +4,12 @@
 
 pub use pallet::*;
 
+#[cfg(test)]
+mod mock;
+
+#[cfg(test)]
+mod tests;
+
 #[frame_support::pallet]
 pub mod pallet {
 	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
@@ -11,9 +17,10 @@ pub mod pallet {
 	use frame_support::traits::{Currency, WithdrawReasons, ExistenceRequirement, Randomness};
 	use sp_runtime::traits::{Zero, Hash, Saturating};
 
+	// TODO: refactor to inject currency trait
 	#[pallet::config]
 	pub trait Config: frame_system::Config + pallet_balances::Config {
-		type Randomness: Randomness<Self::Hash>;
+		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
 
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 	}
@@ -35,7 +42,6 @@ pub mod pallet {
 	pub type Nonce<T> = StorageValue<_, u64, ValueQuery>;
 
 	#[pallet::event]
-	#[pallet::metadata(T::AccountId = "AccountId", T::Balance = "Balance")]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		PaymentSet(T::Balance),
@@ -54,7 +60,7 @@ pub mod pallet {
 	impl<T: Config> Pallet<T> {
 		/// Start the game by initialize the storage items.
 		#[pallet::weight(0)]
-		fn set_payment(origin: OriginFor<T>, value: T::Balance) -> DispatchResultWithPostInfo {
+		pub fn set_payment(origin: OriginFor<T>, value: T::Balance) -> DispatchResultWithPostInfo {
 			// Ensure the function call is a signed message (i.e. a transaction)
 			ensure_signed(origin)?;
 
@@ -75,7 +81,7 @@ pub mod pallet {
 		
 		/// This function allow a user to play our coin flip game
 		#[pallet::weight(0)]
-		fn play(origin: OriginFor<T>) -> DispatchResultWithPostInfo {
+		pub fn play(origin: OriginFor<T>) -> DispatchResultWithPostInfo {
 			// Ensure that the function call is a signed message (i.e. a transaction)
 			let sender = ensure_signed(origin)?;
 
@@ -92,7 +98,7 @@ pub mod pallet {
 			let mut winnings = Zero::zero();
 
 			// Generate a random seed using randomness_collective_flip pallet
-			let random_seed = T::Randomness::random_seed().using_encoded(T::Hashing::hash);
+			let random_seed = T::Randomness::random_seed().0.using_encoded(T::Hashing::hash);
 			let seed_arr = random_seed.as_ref();
 		
 			// as_ref returns an array of u8

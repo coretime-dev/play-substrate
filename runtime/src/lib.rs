@@ -281,6 +281,11 @@ impl pallet_poe::Config for Runtime {
 	type Event = Event;
 }
 
+impl pallet_coinflip::Config for Runtime {
+	type Event = Event;
+	type Randomness = RandomnessCollectiveFlip;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -299,6 +304,7 @@ construct_runtime!(
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
 		PoeModule: pallet_poe::{Pallet, Call, Storage, Event<T>},
+		CoinFlipModule: pallet_coinflip::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

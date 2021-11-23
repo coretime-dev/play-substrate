@@ -20,7 +20,12 @@ version = '3.0.0-monthly-2021-10'
 [dependencies.pallet-poe]
 default-features = false
 path = '../pallets/poe'
-version = '3.0.0-monthly-2021-10'
+version = '3.0.0'
+
+[dependencies.pallet-coinflip]
+default-features = false
+path = '../pallets/coinflip'
+version = '3.0.0'
 
 [build-dependencies.substrate-wasm-builder]
 git = 'https://github.com/paritytech/substrate.git'
@@ -221,6 +226,7 @@ std = [
     'pallet-sudo/std',
     'pallet-template/std',
     'pallet-poe/std',
+    'pallet-coinflip/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
