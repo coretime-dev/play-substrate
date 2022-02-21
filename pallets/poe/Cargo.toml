@@ -1,12 +1,12 @@
 [package]
-authors = ['Kaichao']
-description = 'FRAME proof of existence pallet'
-edition = '2018'
-homepage = 'https://substrate.dev'
-license = 'Unlicense'
 name = 'pallet-poe'
+version = '4.0.0-dev'
+description = 'FRAME proof of existence pallet'
+authors = ['Kaichao Sun <kaichaosuna@gmail.com>']
+homepage = 'https://whisperd.tech'
+edition = '2021'
+license = 'Unlicense'
 repository = 'https://github.com/kaichaosun/play-substrate/'
-version = '3.0.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -19,15 +19,15 @@ package = 'parity-scale-codec'
 version = '2.0.0'
 
 [dependencies]
-frame-support = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-frame-system = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-sp-std = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
+frame-support = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
+frame-system = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
+sp-std = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
 scale-info = { default-features = false, features = ['derive'], version = '1.0' }
 
 [dev-dependencies]
-sp-core = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
+sp-core = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
+sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
+sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
 
 [features]
 default = ['std']

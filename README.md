@@ -1,12 +1,12 @@
 # Play Substrate
 
-## Runtime modules
+## Runtime Modules
 
 Disclaimer: these modules are for learning purpose, you should never use them in *production*.
 
 * Template
 * Proof of Existence
-* Coin flip game 
+* Coin flip game
 * Data type
 * Genesis config demo
 * Offchain worker - send unsigned transaction (outdated)
