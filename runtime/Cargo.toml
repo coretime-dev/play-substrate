@@ -27,6 +27,11 @@ default-features = false
 path = '../pallets/data-type'
 version = '4.0.0-dev'
 
+[dependencies.pallet-genesis-config]
+default-features = false
+path = '../pallets/genesis-config'
+version = '4.0.0-dev'
+
 [build-dependencies.substrate-wasm-builder]
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-12'
@@ -225,6 +230,9 @@ std = [
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
     'pallet-template/std',
+    'pallet-data-type/std',
+    'pallet-poe/std',
+    'pallet-genesis-config/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',

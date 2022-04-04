@@ -3581,6 +3581,7 @@ dependencies = [
  "pallet-aura",
  "pallet-balances",
  "pallet-data-type",
+ "pallet-genesis-config",
  "pallet-grandpa",
  "pallet-poe",
  "pallet-randomness-collective-flip",
@@ -3845,6 +3846,17 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-genesis-config"
+version = "4.0.0-dev"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "scale-info",
  "sp-std",
 ]
 

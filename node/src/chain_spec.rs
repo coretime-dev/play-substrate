@@ -1,6 +1,6 @@
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
-	SystemConfig, WASM_BINARY,
+	SystemConfig, GenesisConfigModuleConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -148,6 +148,10 @@ fn testnet_genesis(
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: root_key,
+		},
+		genesis_config_module: GenesisConfigModuleConfig {
+			something: Some(10),
+			some_map: endowed_accounts.iter().map(|x| (x.clone(), 10)).collect(),
 		},
 		transaction_payment: Default::default(),
 	}
