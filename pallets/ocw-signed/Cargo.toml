@@ -1,12 +1,12 @@
 [package]
 authors = ['Anonymous']
 description = 'FRAME pallet offchain worker send signed transaction'
-edition = '2018'
+edition = '2021'
 homepage = 'https://substrate.dev'
 license = 'Unlicense'
 name = 'pallet-ocw-signed'
 repository = 'https://github.com/paritytech/substrate/'
-version = '2.0.0-rc6'
+version = '4.0.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

@@ -1,12 +1,12 @@
 [package]
 authors = ['Kaichao <kaichaosuna@gmail.com>']
 description = 'A pallet to demo genesis config.'
-edition = '2018'
+edition = '2021'
 homepage = 'https://substrate.dev'
 license = 'Unlicense'
 name = 'pallet-genesis-config'
 repository = 'https://github.com/kaichaosun/play-substrate/'
-version = '2.0.0'
+version = '4.0.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

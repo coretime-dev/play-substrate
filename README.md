@@ -11,7 +11,7 @@ A simple module to experience simple storage data type, error handling, test and
 
 **Proof of Existence Pallet**
 
-A simple module to store a claim (Vec<u8>), revoke it, and transfer the claim to someone else.
+A simple module to store a claim (Vec\<u8\>), revoke it, and transfer the claim to someone else.
 
 **Coin Flip Game**
 
