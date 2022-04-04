@@ -6,7 +6,7 @@ homepage = 'https://substrate.dev'
 license = 'Unlicense'
 name = 'pallet-data-type'
 repository = 'https://github.com/kaichaosun/play-substrate'
-version = '4.0.0'
+version = '4.0.0-dev'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -14,6 +14,7 @@ targets = ['x86_64-unknown-linux-gnu']
 [dependencies]
 codec = { default-features = false, features = ['derive'], package = 'parity-scale-codec', version = "2.0.0" }
 scale-info = { default-features = false, features = ['derive'], version = '1.0' }
+log = { version = "0.4.14", default-features = false }
 frame-support = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
 frame-system = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
 pallet-timestamp = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-12', version = '4.0.0-dev' }
