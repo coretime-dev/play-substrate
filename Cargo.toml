@@ -2,9 +2,9 @@
 members = [
     'node',
     'pallets/template',
-    'pallets/poe',
-    'pallets/data-type',
-    'pallets/genesis-config',
+    # 'pallets/poe',
+    # 'pallets/data-type',
+    # 'pallets/genesis-config',
     'runtime',
 ]
 [profile.release]

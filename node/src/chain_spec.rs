@@ -1,6 +1,6 @@
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
-	SystemConfig, GenesisConfigModuleConfig, WASM_BINARY,
+	SystemConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -68,6 +68,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		None,
 		// Protocol ID
 		None,
+		None,
 		// Properties
 		None,
 		// Extensions
@@ -117,6 +118,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		None,
 		// Properties
 		None,
+		None,
 		// Extensions
 		None,
 	))
@@ -147,12 +149,12 @@ fn testnet_genesis(
 		},
 		sudo: SudoConfig {
 			// Assign network admin rights.
-			key: root_key,
+			key: Some(root_key),
 		},
-		genesis_config_module: GenesisConfigModuleConfig {
-			something: Some(10),
-			some_map: endowed_accounts.iter().map(|x| (x.clone(), 10)).collect(),
-		},
+		// genesis_config_module: GenesisConfigModuleConfig {
+		// 	something: Some(10),
+		// 	some_map: endowed_accounts.iter().map(|x| (x.clone(), 10)).collect(),
+		// },
 		transaction_payment: Default::default(),
 	}
 }
