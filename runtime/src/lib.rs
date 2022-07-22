@@ -271,9 +271,9 @@ impl pallet_poe::Config for Runtime {
 	type Event = Event;
 }
 
-// impl pallet_data_type::Config for Runtime {
-// 	type Event = Event;
-// }
+impl pallet_data_type::Config for Runtime {
+	type Event = Event;
+}
 
 // impl pallet_genesis_config::Config for Runtime {
 // 	type Event = Event;
@@ -297,7 +297,7 @@ construct_runtime!(
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template,
 		PoeModule: pallet_poe,
-		// DataTypeModule: pallet_data_type,
+		DataTypeModule: pallet_data_type,
 		// GenesisConfigModule: pallet_genesis_config,
 	}
 );

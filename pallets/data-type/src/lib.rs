@@ -14,7 +14,7 @@ pub mod pallet {
 			Saturating
 		}
 	};
-	use sp_std::vec::Vec;
+	use sp_std::prelude::*;
 	use sp_core::{H256, U256};
 
 	#[pallet::config]
@@ -56,7 +56,7 @@ pub mod pallet {
 	// default to 0x00
 	#[pallet::storage]
 	#[pallet::getter(fn my_string)]
-	pub type MyString<T> = StorageValue<_, Vec<u8>, ValueQuery>;
+	pub type MyString<T> = StorageValue<_, BoundedVec<u8, ConstU32<100>>, ValueQuery>;
 
 	// float number, Percent, Permill, Perbill
 	#[pallet::storage]
@@ -83,7 +83,7 @@ pub mod pallet {
 	#[pallet::getter(fn my_tuple)]
 	pub type MyTuple<T> = StorageValue<_, (u8, bool)>;
 
-	#[derive(Copy, Clone, Encode, Decode, Eq, PartialEq, Debug, TypeInfo)]
+	#[derive(Copy, Clone, Encode, Decode, Eq, PartialEq, Debug, TypeInfo, MaxEncodedLen)]
 	pub enum Weekday {
 		Monday,
 		Tuesday,
@@ -96,9 +96,9 @@ pub mod pallet {
 	#[pallet::getter(fn my_enum)]
 	pub type MyEnum<T> = StorageValue<_, Weekday>;
 
-	#[derive(Clone, Encode, Decode, Eq, PartialEq, Debug, Default, TypeInfo)]
+	#[derive(Clone, Encode, Decode, Eq, PartialEq, Debug, Default, TypeInfo, MaxEncodedLen)]
 	pub struct People {
-		name: Vec<u8>,
+		name: BoundedVec<u8, ConstU32<10>>,
 		age: u8,
 	}
 
@@ -120,12 +120,12 @@ pub mod pallet {
 	// map
 	#[pallet::storage]
 	#[pallet::getter(fn my_map)]
-	pub type MyMap<T> = StorageMap<_, Twox64Concat, u8, Vec<u8>>;
+	pub type MyMap<T: Config> = StorageMap<_, Twox64Concat, u8, T::Hash>;
 
 	// double map
 	#[pallet::storage]
 	#[pallet::getter(fn my_double_map)]
-	pub type MyDoubleMap<T: Config> = StorageDoubleMap<_, Blake2_128Concat, T::AccountId, Twox64Concat, u32, Vec<u8>>;
+	pub type MyDoubleMap<T: Config> = StorageDoubleMap<_, Blake2_128Concat, T::AccountId, Twox64Concat, u32, T::Hash>;
 
 	// storage n map
 	#[pallet::storage]
@@ -137,7 +137,8 @@ pub mod pallet {
 			NMapKey<Blake2_128Concat, T::BlockNumber>, // owner
 			NMapKey<Blake2_128Concat, u32>, // delegate
 		),
-		Vec<u8>>;
+		T::Hash,
+	>;
 
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
@@ -146,7 +147,10 @@ pub mod pallet {
 	}
 
 	#[pallet::error]
-	pub enum Error<T> {}
+	pub enum Error<T> {
+		NameTooLong,
+		StringTooLong,
+	}
 
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
@@ -243,11 +247,10 @@ pub mod pallet {
 		pub fn play_string(origin: OriginFor<T>, value: Vec<u8>) -> DispatchResult {
 			ensure_signed(origin)?;
 
-			MyString::<T>::put(value);
+			let bounded_value = BoundedVec::<u8, ConstU32<100>>::try_from(value.clone()).map_err(|_| Error::<T>::StringTooLong)?;
+			MyString::<T>::put(bounded_value);
 
-			let mut my_string = MyString::<T>::get();
-
-			my_string.push(10);
+			let my_string = MyString::<T>::get();
 
 			let _new_string = my_string.iter().map(|v| v + 1);
 
@@ -329,7 +332,7 @@ pub mod pallet {
 			ensure_signed(origin)?;
 
 			let people = People {
-				name,
+				name: BoundedVec::<u8, ConstU32<10>>::try_from(name.clone()).map_err(|_| Error::<T>::NameTooLong)?,
 				age,
 			};
 			MyStruct::<T>::put(people);
@@ -340,7 +343,7 @@ pub mod pallet {
 		}
 
 		#[pallet::weight(0)]
-		pub fn insert_map(origin: OriginFor<T>, key: u8, value: Vec<u8>) -> DispatchResult {
+		pub fn insert_map(origin: OriginFor<T>, key: u8, value: T::Hash) -> DispatchResult {
 			ensure_signed(origin)?;
 
 			MyMap::<T>::insert(key, value);
@@ -356,7 +359,7 @@ pub mod pallet {
 		}
 
 		#[pallet::weight(0)]
-		pub fn insert_double_map(origin: OriginFor<T>, key2: u32, value: Vec<u8>) -> DispatchResult {
+		pub fn insert_double_map(origin: OriginFor<T>, key2: u32, value: T::Hash) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
 
 			MyDoubleMap::<T>::insert(&sender, key2, value);
@@ -365,7 +368,7 @@ pub mod pallet {
 
 			MyDoubleMap::<T>::remove(&sender, key2);
 
-			MyDoubleMap::<T>::remove_prefix(&sender, None);
+			let _cursor = MyDoubleMap::<T>::clear_prefix(&sender, 100, None);
 
 			Ok(())
 		}
