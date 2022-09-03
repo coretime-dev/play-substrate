@@ -66,16 +66,16 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn create_claim(d: u32, ) -> Weight {
-		(12_937_000 as Weight)
+		(13_317_000 as Weight)
 			// Standard Error: 0
-			.saturating_add((5_000 as Weight).saturating_mul(d as Weight))
+			.saturating_add((6_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(T::DbWeight::get().reads(1 as Weight))
 			.saturating_add(T::DbWeight::get().writes(1 as Weight))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn revoke_claim(d: u32, ) -> Weight {
-		(12_900_000 as Weight)
+		(12_796_000 as Weight)
 			// Standard Error: 0
 			.saturating_add((8_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(T::DbWeight::get().reads(1 as Weight))
@@ -84,7 +84,7 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn transfer_claim(d: u32, ) -> Weight {
-		(7_931_000 as Weight)
+		(7_722_000 as Weight)
 			// Standard Error: 0
 			.saturating_add((7_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(T::DbWeight::get().reads(1 as Weight))
@@ -97,16 +97,16 @@ impl WeightInfo for () {
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn create_claim(d: u32, ) -> Weight {
-		(12_937_000 as Weight)
+		(13_317_000 as Weight)
 			// Standard Error: 0
-			.saturating_add((5_000 as Weight).saturating_mul(d as Weight))
+			.saturating_add((6_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(RocksDbWeight::get().reads(1 as Weight))
 			.saturating_add(RocksDbWeight::get().writes(1 as Weight))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn revoke_claim(d: u32, ) -> Weight {
-		(12_900_000 as Weight)
+		(12_796_000 as Weight)
 			// Standard Error: 0
 			.saturating_add((8_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(RocksDbWeight::get().reads(1 as Weight))
@@ -115,7 +115,7 @@ impl WeightInfo for () {
 	// Storage: PoeModule Proofs (r:1 w:1)
 	/// The range of component `d` is `[0, 512]`.
 	fn transfer_claim(d: u32, ) -> Weight {
-		(7_931_000 as Weight)
+		(7_722_000 as Weight)
 			// Standard Error: 0
 			.saturating_add((7_000 as Weight).saturating_mul(d as Weight))
 			.saturating_add(RocksDbWeight::get().reads(1 as Weight))
