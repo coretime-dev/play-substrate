@@ -14,6 +14,7 @@ fn create_claim_works() {
 			Proofs::<Test>::get(&bounded_claim),
 			Some((1, frame_system::Pallet::<Test>::block_number()))
 		);
+		assert_eq!(<<Test as Config>::MaxClaimLength as Get<u32>>::get(), 512);
 	})
 }
 
