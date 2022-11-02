@@ -2,8 +2,8 @@
 members = [
     'node',
     'pallets/template',
-    'pallets/poe',
-    'pallets/data-type',
+    # 'pallets/poe',
+    # 'pallets/data-type',
     # 'pallets/genesis-config',
     'runtime',
 ]
