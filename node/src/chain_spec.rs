@@ -151,10 +151,6 @@ fn testnet_genesis(
 			// Assign network admin rights.
 			key: Some(root_key),
 		},
-		// genesis_config_module: GenesisConfigModuleConfig {
-		// 	something: Some(10),
-		// 	some_map: endowed_accounts.iter().map(|x| (x.clone(), 10)).collect(),
-		// },
 		transaction_payment: Default::default(),
 	}
 }
