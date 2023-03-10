@@ -50,7 +50,7 @@ impl system::Config for Test {
 }
 
 impl pallet_poe::Config for Test {
-	type MaxClaimLength = ConstU32<512>;
+	type MaxClaimLength = ConstU32<10>;
 	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = ();
 }
