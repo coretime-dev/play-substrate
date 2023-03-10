@@ -48,32 +48,30 @@ pub trait WeightInfo {
 pub struct SubstrateWeight<T>(PhantomData<T>);
 impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
+	/// The range of component `d` is `[0, 10]`.
 	fn create_claim(d: u32, ) -> Weight {
 		// Minimum execution time: 15_000 nanoseconds.
-		Weight::from_ref_time(16_015_281)
-			// Standard Error: 343
-			.saturating_add(Weight::from_ref_time(4_244).saturating_mul(d.into()))
+		Weight::from_ref_time(15_294_469)
+			// Standard Error: 15_368
+			.saturating_add(Weight::from_ref_time(58_995).saturating_mul(d.into()))
 			.saturating_add(T::DbWeight::get().reads(1))
 			.saturating_add(T::DbWeight::get().writes(1))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
-	fn revoke_claim(d: u32, ) -> Weight {
+	/// The range of component `d` is `[0, 10]`.
+	fn revoke_claim(_d: u32, ) -> Weight {
 		// Minimum execution time: 15_000 nanoseconds.
-		Weight::from_ref_time(16_237_031)
-			// Standard Error: 313
-			.saturating_add(Weight::from_ref_time(13_159).saturating_mul(d.into()))
+		Weight::from_ref_time(16_062_308)
 			.saturating_add(T::DbWeight::get().reads(1))
 			.saturating_add(T::DbWeight::get().writes(1))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
+	/// The range of component `d` is `[0, 10]`.
 	fn transfer_claim(d: u32, ) -> Weight {
-		// Minimum execution time: 11_000 nanoseconds.
-		Weight::from_ref_time(11_203_230)
-			// Standard Error: 212
-			.saturating_add(Weight::from_ref_time(12_607).saturating_mul(d.into()))
+		// Minimum execution time: 10_000 nanoseconds.
+		Weight::from_ref_time(11_132_390)
+			// Standard Error: 12_888
+			.saturating_add(Weight::from_ref_time(11_595).saturating_mul(d.into()))
 			.saturating_add(T::DbWeight::get().reads(1))
 			.saturating_add(T::DbWeight::get().writes(1))
 	}
@@ -82,32 +80,30 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 // For backwards compatibility and tests
 impl WeightInfo for () {
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
+	/// The range of component `d` is `[0, 10]`.
 	fn create_claim(d: u32, ) -> Weight {
 		// Minimum execution time: 15_000 nanoseconds.
-		Weight::from_ref_time(16_015_281)
-			// Standard Error: 343
-			.saturating_add(Weight::from_ref_time(4_244).saturating_mul(d.into()))
+		Weight::from_ref_time(15_294_469)
+			// Standard Error: 15_368
+			.saturating_add(Weight::from_ref_time(58_995).saturating_mul(d.into()))
 			.saturating_add(RocksDbWeight::get().reads(1))
 			.saturating_add(RocksDbWeight::get().writes(1))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
-	fn revoke_claim(d: u32, ) -> Weight {
+	/// The range of component `d` is `[0, 10]`.
+	fn revoke_claim(_d: u32, ) -> Weight {
 		// Minimum execution time: 15_000 nanoseconds.
-		Weight::from_ref_time(16_237_031)
-			// Standard Error: 313
-			.saturating_add(Weight::from_ref_time(13_159).saturating_mul(d.into()))
+		Weight::from_ref_time(16_062_308)
 			.saturating_add(RocksDbWeight::get().reads(1))
 			.saturating_add(RocksDbWeight::get().writes(1))
 	}
 	// Storage: PoeModule Proofs (r:1 w:1)
-	/// The range of component `d` is `[0, 512]`.
+	/// The range of component `d` is `[0, 10]`.
 	fn transfer_claim(d: u32, ) -> Weight {
-		// Minimum execution time: 11_000 nanoseconds.
-		Weight::from_ref_time(11_203_230)
-			// Standard Error: 212
-			.saturating_add(Weight::from_ref_time(12_607).saturating_mul(d.into()))
+		// Minimum execution time: 10_000 nanoseconds.
+		Weight::from_ref_time(11_132_390)
+			// Standard Error: 12_888
+			.saturating_add(Weight::from_ref_time(11_595).saturating_mul(d.into()))
 			.saturating_add(RocksDbWeight::get().reads(1))
 			.saturating_add(RocksDbWeight::get().writes(1))
 	}

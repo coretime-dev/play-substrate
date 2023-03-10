@@ -1,6 +1,7 @@
 use crate::*;
 use frame_benchmarking::{benchmarks, whitelisted_caller, account};
 use frame_system::RawOrigin;
+use sp_std::vec;
 
 fn assert_last_event<T: Config>(generic_event: <T as Config>::RuntimeEvent) {
 	frame_system::Pallet::<T>::assert_last_event(generic_event.into());
@@ -9,7 +10,7 @@ fn assert_last_event<T: Config>(generic_event: <T as Config>::RuntimeEvent) {
 benchmarks! {
 	create_claim {
 		let d in 0 .. T::MaxClaimLength::get();
-		let claim = vec![0; d as usize];
+		let claim = BoundedVec::try_from(vec![0; d as usize]).unwrap();
 		let caller: T::AccountId = whitelisted_caller();
 	}: _(RawOrigin::Signed(caller.clone()), claim.clone())
 	verify {
@@ -18,7 +19,7 @@ benchmarks! {
 
 	revoke_claim {
 		let d in 0 .. T::MaxClaimLength::get();
-		let claim = vec![0; d as usize];
+		let claim = BoundedVec::try_from(vec![0; d as usize]).unwrap();
 		let caller: T::AccountId = whitelisted_caller();
 		assert!(Pallet::<T>::create_claim(RawOrigin::Signed(caller.clone()).into(), claim.clone()).is_ok());
 	}: _(RawOrigin::Signed(caller.clone()), claim.clone())
@@ -28,7 +29,7 @@ benchmarks! {
 
 	transfer_claim {
 		let d in 0 .. T::MaxClaimLength::get();
-		let claim = vec![0; d as usize];
+		let claim = BoundedVec::try_from(vec![0; d as usize]).unwrap();
 		let caller: T::AccountId = whitelisted_caller();
 		let target: T::AccountId = account("target", 0, 0);
 		assert!(Pallet::<T>::create_claim(RawOrigin::Signed(caller.clone()).into(), claim.clone()).is_ok());
