@@ -154,6 +154,7 @@ pub mod pallet {
 
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
+		#[pallet::call_index(0)]
 		#[pallet::weight(0)]
 		pub fn set_option(origin: OriginFor<T>, value: u32) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -164,6 +165,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(1)]
 		#[pallet::weight(0)]
 		pub fn modify_option(origin: OriginFor<T>) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -179,6 +181,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(2)]
 		#[pallet::weight(0)]
 		pub fn delete_option(origin: OriginFor<T>) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -188,6 +191,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(3)]
 		#[pallet::weight(0)]
 		// this is for demonstration, you should never put all the operations in one call.
 		pub fn play_number(origin: OriginFor<T>, number: u8) -> DispatchResult {
@@ -204,6 +208,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(4)]
 		#[pallet::weight(0)]
 		// this is for demonstration, you should never put all the operations in one call.
 		pub fn play_integer(origin: OriginFor<T>, number: i8) -> DispatchResult {
@@ -220,6 +225,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(5)]
 		#[pallet::weight(0)]
 		// this is for demonstration, you should never put all the operations in one call.
 		pub fn play_bool(origin: OriginFor<T>, value: bool) -> DispatchResult {
@@ -242,6 +248,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(6)]
 		#[pallet::weight(0)]
 		// this is for demonstration, you should never put all the operations in one call.
 		pub fn play_string(origin: OriginFor<T>, value: Vec<u8>) -> DispatchResult {
@@ -263,6 +270,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(7)]
 		#[pallet::weight(0)]
 		// this is for demonstration, you should never put all the operations in one call.
 		pub fn play_permill(origin: OriginFor<T>, value: u32) -> DispatchResult {
@@ -283,6 +291,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(8)]
 		#[pallet::weight(0)]
 		pub fn play_time(origin: OriginFor<T>) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -293,6 +302,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(9)]
 		#[pallet::weight(0)]
 		pub fn play_account_id(origin: OriginFor<T>) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
@@ -301,6 +311,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(10)]
 		#[pallet::weight(0)]
 		pub fn play_block_number(origin: OriginFor<T>) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -309,6 +320,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(11)]
 		#[pallet::weight(0)]
 		pub fn play_tuple(origin: OriginFor<T>, first: u8, second: bool) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -318,6 +330,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(12)]
 		#[pallet::weight(0)]
 		pub fn play_enum(origin: OriginFor<T>, weekday: Weekday) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -327,6 +340,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(13)]
 		#[pallet::weight(0)]
 		pub fn play_struct(origin: OriginFor<T>, name: Vec<u8>, age: u8) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -342,6 +356,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(14)]
 		#[pallet::weight(0)]
 		pub fn insert_map(origin: OriginFor<T>, key: u8, value: T::Hash) -> DispatchResult {
 			ensure_signed(origin)?;
@@ -358,6 +373,7 @@ pub mod pallet {
 			Ok(())
 		}
 
+		#[pallet::call_index(15)]
 		#[pallet::weight(0)]
 		pub fn insert_double_map(origin: OriginFor<T>, key2: u32, value: T::Hash) -> DispatchResult {
 			let sender = ensure_signed(origin)?;
