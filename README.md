@@ -7,11 +7,11 @@ A few simple pallets for learning and demo the capability of Substrate blockchai
 Disclaimer: these modules are for learning purpose, you should never use them in *production*.
 
 - **Template Pallet**, A simple module to experience simple storage data type, error handling, test and benchmark structure.
-- **Proof of Existence Pallet**, A simple module to store a claim (Vec\<u8\>), revoke it, and transfer the claim to someone else. This pallet includes,
+- **Proof of Existence Pallet**, A simple module to store a claim (BoundedVec\<u8\>), revoke it, and transfer the claim to someone else. This pallet includes,
   - busisness logic to create/revoke/transfer a claim.
   - unit test of logic
   - benchmark of weights used for each dispatchables.
-- **Data Type Pallet**, It helps with better understanding what Rust types are allowed to be used in Substrate chain development.
+- **Data Type Pallet**, It helps with better understanding what Rust types are supported in Substrate blockchain development.
 - **Coin Flip Game Pallet**, *Outdated*
 - **Benchmark Demo**, *Deprecated*, you can find similar code in Proof of Existence pallet.
 - **Offchain Worker**
