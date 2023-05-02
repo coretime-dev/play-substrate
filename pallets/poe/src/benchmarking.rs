@@ -1,5 +1,5 @@
 use crate::*;
-use frame_benchmarking::{benchmarks, whitelisted_caller, account};
+use frame_benchmarking::v1::{benchmarks, whitelisted_caller, account};
 use frame_system::RawOrigin;
 use sp_std::vec;
 
