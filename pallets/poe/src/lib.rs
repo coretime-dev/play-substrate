@@ -40,7 +40,7 @@ pub mod pallet {
 		_,
 		Blake2_128Concat,
 		BoundedVec<u8, T::MaxClaimLength>,
-		(T::AccountId, T::BlockNumber),
+		(T::AccountId, BlockNumberFor<T>),
 	>;
 
 	#[pallet::event]
