@@ -3,7 +3,7 @@
 /// A module for demo storage data types.
 pub use pallet::*;
 
-#[frame_support::pallet]
+#[frame_support::pallet(dev_mode)]
 pub mod pallet {
 	use frame_support::{pallet_prelude::*, Blake2_128Concat, Twox64Concat};
 	use frame_system::pallet_prelude::*;
@@ -75,7 +75,7 @@ pub mod pallet {
 	// BlockNumber
 	#[pallet::storage]
 	#[pallet::getter(fn my_block_number)]
-	pub type MyBlockNumber<T: Config> = StorageValue<_, T::BlockNumber>;
+	pub type MyBlockNumber<T: Config> = StorageValue<_, BlockNumberFor<T>>;
 
 	// tuple
 	#[pallet::storage]
@@ -133,7 +133,7 @@ pub mod pallet {
 		_,
 		(
 			NMapKey<Blake2_128Concat, T::AccountId>,
-			NMapKey<Blake2_128Concat, T::BlockNumber>, // owner
+			NMapKey<Blake2_128Concat, BlockNumberFor<T>>, // owner
 			NMapKey<Blake2_128Concat, u32>, // delegate
 		),
 		T::Hash,

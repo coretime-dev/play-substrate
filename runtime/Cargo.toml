@@ -52,7 +52,7 @@ frame-system-benchmarking = { default-features = false, git = "https://github.co
 # Local Dependencies
 pallet-template = { default-features = false, path = "../pallets/template" }
 pallet-poe = { default-features = false, path = "../pallets/poe" }
-# pallet-data-type = { default-features = false, path = "../pallets/data-type" }
+pallet-data-type = { default-features = false, path = "../pallets/data-type" }
 
 [build-dependencies]
 substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk.git", optional = true, tag = "polkadot-v1.2.0" }
@@ -74,6 +74,7 @@ std = [
 	"pallet-sudo/std",
 	"pallet-template/std",
 	"pallet-poe/std",
+	"pallet-data-type/std",
 	"pallet-timestamp/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
